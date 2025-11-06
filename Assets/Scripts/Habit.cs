@@ -47,7 +47,7 @@ public class Habit : MonoBehaviour
     {
         textName.text = data.name;
 
-        imageStreakFill.transform.localScale = new Vector3(data.currentAmount / data.targetAmount, 1, 1);
+        imageStreakFill.fillAmount = data.currentAmount / data.targetAmount;
 
 
         if(data.type == HabitType.measurable)

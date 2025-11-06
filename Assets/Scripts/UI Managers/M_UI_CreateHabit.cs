@@ -9,18 +9,18 @@ public class M_UI_CreateHabit : MonoBehaviour
 {
 
     public static M_UI_CreateHabit singleton;
-
+    
+    [Header("Sprites")]
     [SerializeField] private Sprite toggleOff;
     [SerializeField] private Sprite toggleOn;
 
-
+    
+    [Header("\nIn scene objects")]
     [SerializeField] private Button buttonCreateHabit;
     [SerializeField] private Button buttonCancel;
 
 
     [SerializeField] private Button buttonChangeColor;
-    [SerializeField] private GameObject panelColorPicker;
-
 
     [SerializeField] private TMP_InputField inputHabitName;
     [SerializeField] private TMP_InputField inputHabitQuestion;
@@ -34,6 +34,7 @@ public class M_UI_CreateHabit : MonoBehaviour
 
 
     #region Habit inputs
+
     private Color habitColor => buttonChangeColor.transform.GetChild(0).GetComponent<Image>().color;
     private HabitType habitType => !toggleHabitType.isOn ? HabitType.yesOrNo : HabitType.measurable; 
 
@@ -65,9 +66,8 @@ public class M_UI_CreateHabit : MonoBehaviour
         SetButtonCreateHabit();
 
 
-        SetColorPickerMenu();
+        SetButtonChangeColor();
         SetToggleType();
-
         SetInputsLimits();
     }
     
@@ -81,25 +81,9 @@ public class M_UI_CreateHabit : MonoBehaviour
         buttonCreateHabit.onClick.AddListener(() => M_Habits.singleton.CreateHabit(new HabitData(habitType, habitColor, habitName, habitQuestion, habitUnit, habitAmount)));
     }
 
-    private void SetColorPickerMenu()
-    {
-        buttonChangeColor.onClick.AddListener(() => panelColorPicker.SetActive(true));
-        panelColorPicker.GetComponent<Button>().onClick.AddListener((() => panelColorPicker.SetActive(false)));
 
 
-        Transform colorsList = panelColorPicker.transform.GetChild(0).GetChild(1);
-        Image habitColorImage = buttonChangeColor.transform.GetChild(0).GetComponent<Image>();
-
-        Transform colorCheck = colorsList.transform.GetChild(0).GetChild(0);
-
-        foreach (Transform color in colorsList)
-        {
-            color.GetComponent<Button>().onClick.AddListener(() => habitColorImage.color = color.GetComponent<Image>().color);
-            color.GetComponent<Button>().onClick.AddListener(() => ChangeSelectedColor(color.transform, colorCheck));
-            color.GetComponent<Button>().onClick.AddListener(() => panelColorPicker.SetActive(false));
-        }
-    }
-
+    private void SetButtonChangeColor() => buttonChangeColor.onClick.AddListener(M_UI_Main.singleton.OpenColorPickerMenu);
     private void SetToggleType()
     {
         GameObject unitAmount_Group = inputHabitUnit.transform.parent.parent.gameObject;
@@ -109,6 +93,9 @@ public class M_UI_CreateHabit : MonoBehaviour
         toggleHabitType.onValueChanged.AddListener((val) => unitAmount_Group.SetActive(val));
         toggleHabitType.onValueChanged.AddListener((val) => CheckAllMandatoryInputs());
     }
+    
+    
+    
     private void SetInputsLimits()
     {
         string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ .!?";
@@ -165,18 +152,14 @@ public class M_UI_CreateHabit : MonoBehaviour
         inputHabitUnit.text = string.Empty;
         inputHabitAmount.text = string.Empty;
 
-        buttonChangeColor.transform.GetChild(0).GetComponent<Image>().color = new Color(238, 154, 154, 255);
+        toggleHabitType.isOn = false;
+
+
+        M_UI_ColorPicker.singleton.ChangeSelectedColor(0);
 
         CheckAllMandatoryInputs();
     }
 
-
-
-    private void ChangeSelectedColor(Transform selectedColor, Transform colorCheck)
-    {
-        colorCheck.SetParent(selectedColor);
-        colorCheck.localPosition = Vector2.zero;
-    }
 
     private void ChangeToogleIcon(bool val) => toggleHabitType.GetComponent<Image>().sprite = !val ? toggleOff : toggleOn; 
 

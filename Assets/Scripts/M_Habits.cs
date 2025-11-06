@@ -6,11 +6,16 @@ using UnityEngine;
 public class M_Habits : MonoBehaviour
 {
     public static M_Habits singleton;
-    
+
+    [Header("Prefabs")]
     [SerializeField] private GameObject prefabHabitYesOrNo;
     [SerializeField] private GameObject prefabHabitMeasurable;
 
-    private List<Habit> habitList = new List<Habit>();
+
+
+    [HideInInspector] public List<Habit> habitList;
+
+
 
     private void Awake() => Initialize();
     
@@ -42,11 +47,14 @@ public class M_Habits : MonoBehaviour
         habit.transform.SetParent(M_UI_Main.singleton.panelHabits.transform);
         habit.transform.localScale = Vector3.one;
 
+        habitList.Add(habit);
+
     }
 
 
     public void DestroyHabit(Habit habit)
     {
+        habitList.Remove(habit);
     }
 
 }

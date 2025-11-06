@@ -17,13 +17,16 @@ public class HabitData
     public HabitType type { get; private set; }
     public Color color { get; private set; } = Color.blue;
 
-    
     public string name { get; private set; }
     public string question { get; private set; }
     
     public string unit { get; private set; }
     public float targetAmount { get; private set; }
     public float currentAmount { get; private set; }
+
+
+    public float completionValue {  get; private set; }
+
 
     public HabitData(HabitType _type, Color _color, string _name, string _question, string _unit, float _targetAmount)
     {
@@ -33,6 +36,10 @@ public class HabitData
         question    = _question;
         unit        = _unit;
         targetAmount= _targetAmount;
+
+        currentAmount = 0;
+
+        completionValue = currentAmount / targetAmount;
     }
 
 
