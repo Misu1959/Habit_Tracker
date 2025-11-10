@@ -103,7 +103,7 @@ public class M_UI_CreateHabit : MonoBehaviour
 
 
         SetInputField(inputHabitName, 10, alphabet);
-        SetInputField(inputHabitQuestion, 10, alphabet + digits);
+        SetInputField(inputHabitQuestion, 20, alphabet + digits);
 
         SetInputField(inputHabitUnit, 10, alphabet);
         SetDigitInputField(inputHabitAmount, 5, digits);

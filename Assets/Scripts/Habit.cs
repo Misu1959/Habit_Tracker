@@ -18,10 +18,26 @@ public class Habit : MonoBehaviour
 
     private void Start()
     {
+        Setup();
+
+        
         Recolor();
         DisplayInfo();
     }
 
+    private void Setup()
+    {
+        SetButtons();
+    }
+
+    private void SetButtons()
+    {
+        foreach (Transform day in weekDays)
+        {
+            day.GetComponent<Button>().onClick.AddListener(M_UI_Main.singleton.OpenUpdateHabitMenu);
+            day.GetComponent<Button>().onClick.AddListener(() => M_UI_UpdateHabit.singleton.ChangeHabitToUpdate(this));
+        }
+    }
 
     public void Recolor()
     {
@@ -37,7 +53,7 @@ public class Habit : MonoBehaviour
         else
         {
             foreach (Transform day in weekDays)
-                day.GetComponent<TextMeshProUGUI>().color = data.color;
+                day.GetComponentInChildren<TextMeshProUGUI>().color = data.color;
         }
 
     }
@@ -53,7 +69,7 @@ public class Habit : MonoBehaviour
         if(data.type == HabitType.measurable)
         {
             foreach (Transform day in weekDays)
-                day.GetComponent<TextMeshProUGUI>().text = data.currentAmount + "/" + data.targetAmount + "\n" + data.unit;
+                day.GetComponentInChildren<TextMeshProUGUI>().text = data.currentAmount + "/" + data.targetAmount + "\n" + data.unit;
         }
     }
 

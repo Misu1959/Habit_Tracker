@@ -15,9 +15,16 @@ public class M_UI_Main : MonoBehaviour
 
 
     [field:SerializeField] public Transform panelHabits { get; private set; }
+
     [field: SerializeField] public Transform panelCreateHabit { get; private set; }
+    [field: SerializeField] public Transform panelDisplayHabit { get; private set; }
+    [field: SerializeField] public Transform panelUpdateHabit { get; private set; }
+
     [field: SerializeField] public Transform panelSortHabits { get; private set; }
     [field:SerializeField] public  Transform panelColorPicker { get; private set; }
+
+
+
 
 
     private void Awake() => Initialize();
@@ -35,6 +42,7 @@ public class M_UI_Main : MonoBehaviour
 
     private void Setup()
     {
+        panelUpdateHabit.GetComponent<Button>().onClick.AddListener(CloseUpdateHabitMenu);
         panelColorPicker.GetComponent<Button>().onClick.AddListener(CloseColorPickerMenu);
         panelSortHabits.GetComponent<Button>().onClick.AddListener(CloseSortHabitsMenu);
 
@@ -67,6 +75,9 @@ public class M_UI_Main : MonoBehaviour
     public void OpenCreateHabitMenu() => panelCreateHabit.gameObject.SetActive(true);
     public void CloseCreateHabitMenu() => panelCreateHabit.gameObject.SetActive(false);
 
+    public void OpenUpdateHabitMenu() => panelUpdateHabit.gameObject.SetActive(true);
+    public void CloseUpdateHabitMenu() => panelUpdateHabit.gameObject.SetActive(false);
+
 
     public void OpenSortHabitsMenu() => panelSortHabits.gameObject.SetActive(true);
     public void CloseSortHabitsMenu() => panelSortHabits.gameObject.SetActive(false);
@@ -75,8 +86,21 @@ public class M_UI_Main : MonoBehaviour
     public void CloseColorPickerMenu() => panelColorPicker.gameObject.SetActive(false);
 
 
-    public void TurnLayoutOn() => panelHabits.GetComponent<VerticalLayoutGroup>().enabled = true;
-    public void TurnLayoutOff() => panelHabits.GetComponent<VerticalLayoutGroup>().enabled = false;
+
+
+
+
+
+    public void TurnLayoutOn()
+    {
+        panelHabits.GetComponent<ContentSizeFitter>().enabled = true;
+        panelHabits.GetComponent<VerticalLayoutGroup>().enabled = true;
+    }
+    public void TurnLayoutOff()
+    {
+        panelHabits.GetComponent<ContentSizeFitter>().enabled = false;
+        panelHabits.GetComponent<VerticalLayoutGroup>().enabled = false;
+    }
     public void RefreshLayout()
     {
         if (panelHabits.GetComponent<VerticalLayoutGroup>().enabled)

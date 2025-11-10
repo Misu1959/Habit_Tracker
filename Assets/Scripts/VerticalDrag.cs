@@ -5,85 +5,120 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class VerticalDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class VerticalDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
 {
-    private Canvas screen => GameObject.FindGameObjectWithTag("Screen").GetComponent<Canvas>();
 
-    
-    private RectTransform rectTransform     => GetComponent<RectTransform>();
+    private enum DragType
+    {
+        none,
+        pressed,
+        sort,
+        scroll
+    };
+    private ScrollRect scrollRect => M_UI_Main.singleton.panelHabits.GetComponentInParent<ScrollRect>();
 
-    private float layoutSize;
+    private PointerEventData currentEventData;
 
-    private Vector2 initialPosition;
+    private DragType dragType;
+
+
+    [SerializeField] private SortedObject sortedObject;
+
+    private float holdTime;
+    [SerializeField] private float minHoldTime;
+    [SerializeField] private float maxHoldTime;
+
+
+
+
+
+    void Update() => CheckSortingTimer();
+
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        currentEventData = eventData;
+
+
+        holdTime = 0f;
+        dragType = DragType.pressed;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+
+        if (dragType == DragType.pressed)
+        {
+            dragType = DragType.none;
+
+            if (holdTime <= minHoldTime)
+                GetComponent<Button>()?.onClick.Invoke();
+        }
+    } 
 
 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        initialPosition = rectTransform.anchoredPosition;
-        layoutSize = transform.parent.GetComponent<RectTransform>().rect.height;
 
-        M_UI_Main.singleton.TurnLayoutOff();
+        switch(dragType)
+        {
+            case DragType.pressed:
+                dragType = DragType.scroll;
+                scrollRect.OnBeginDrag(eventData); 
+                break;
+            case DragType.scroll:
+                dragType = DragType.scroll;
+                scrollRect.OnBeginDrag(eventData); 
+                break;
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        SetPosition(eventData);
-        ChangeOrder();
-    }
-
-    public void OnEndDrag(PointerEventData eventData) => M_UI_Main.singleton.TurnLayoutOn();
-
-
-
-
-    private void SetPosition(PointerEventData eventData)
-    {
-        float scaledDeltaY = eventData.delta.y / screen.scaleFactor;
-
-        Vector2 newPos = rectTransform.anchoredPosition;
-
-        newPos.y += scaledDeltaY;
-        newPos.y = Mathf.Clamp(newPos.y, -layoutSize, 0);
-
-        rectTransform.anchoredPosition = newPos;
-    }
-
-    private void ChangeOrder()
-    {
-        int index = M_Habits.singleton.habitList.IndexOf(GetComponent<Habit>());
-
-        for (int i = 0; i < index; i++)
+        switch (dragType)
         {
-            RectTransform habitRect = M_Habits.singleton.habitList[i].GetComponent<RectTransform>();
-
-            if (rectTransform.position.y > habitRect.position.y)
-            {
-
-                Habit aux = M_Habits.singleton.habitList[index];
-                M_Habits.singleton.habitList[index] = M_Habits.singleton.habitList[i];
-                M_Habits.singleton.habitList[i] = aux;
-
-                M_UI_Main.singleton.RefreshLayout();
+            case DragType.scroll:
+                scrollRect.OnDrag(eventData);
                 break;
-            }
-        }
-
-
-        for (int i = M_Habits.singleton.habitList.Count - 1; i > index; i--)
-        {
-            RectTransform habitRect = M_Habits.singleton.habitList[i].GetComponent<RectTransform>();
-
-            if (rectTransform.position.y < habitRect.position.y)
-            {
-                Habit aux = M_Habits.singleton.habitList[index];
-                M_Habits.singleton.habitList[index] = M_Habits.singleton.habitList[i];
-                M_Habits.singleton.habitList[i] = aux;
-
-                M_UI_Main.singleton.RefreshLayout();
+            case DragType.sort:
+                sortedObject.Sort(eventData);
                 break;
-            }
         }
     }
 
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        switch (dragType)
+        {
+            case DragType.scroll:
+                dragType = DragType.none;
+                scrollRect.OnEndDrag(eventData);
+                break;
+            case DragType.sort:
+                dragType = DragType.none;
+                sortedObject.EndSorting();
+                break;
+        }
+    }
+
+
+
+
+    private void CheckSortingTimer()
+    {
+        if (dragType != DragType.pressed)
+            return;
+
+        holdTime = Mathf.Clamp(holdTime + Time.deltaTime, 0, maxHoldTime);
+
+
+        if (holdTime == maxHoldTime)
+        {
+            dragType = DragType.sort;
+
+            sortedObject.StartSorting();
+            scrollRect.OnEndDrag(currentEventData);
+        }
+    }
 }
