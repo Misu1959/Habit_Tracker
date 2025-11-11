@@ -88,7 +88,7 @@ public class M_UI_CreateHabit : MonoBehaviour
     {
         GameObject unitAmount_Group = inputHabitUnit.transform.parent.parent.gameObject;
 
-        toggleHabitType.onValueChanged.AddListener((val) => ChangeToogleIcon(val));
+        toggleHabitType.onValueChanged.AddListener((val) => toggleHabitType.GetComponent<Image>().sprite = !val ? toggleOff : toggleOn);
 
         toggleHabitType.onValueChanged.AddListener((val) => unitAmount_Group.SetActive(val));
         toggleHabitType.onValueChanged.AddListener((val) => CheckAllMandatoryInputs());
@@ -98,46 +98,11 @@ public class M_UI_CreateHabit : MonoBehaviour
     
     private void SetInputsLimits()
     {
-        string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ .!?";
-        string digits = "1234567890.";
-
-
-        SetInputField(inputHabitName, 10, alphabet);
-        SetInputField(inputHabitQuestion, 20, alphabet + digits);
-
-        SetInputField(inputHabitUnit, 10, alphabet);
-        SetDigitInputField(inputHabitAmount, 5, digits);
+        inputHabitName.GetComponent<InputFieldSettings>().onValueChangeCheck   += CheckAllMandatoryInputs;
+        inputHabitUnit.GetComponent<InputFieldSettings>().onValueChangeCheck   += CheckAllMandatoryInputs;
+        inputHabitAmount.GetComponent<InputFieldSettings>().onValueChangeCheck += CheckAllMandatoryInputs;
 
     }
-
-    private void SetInputField(TMP_InputField input, int characterAmount, string validCharacters)
-    {
-        input.characterLimit = characterAmount;
-
-        input.onValidateInput = (string text, int charIndex, char addedChar) => ValidateCharacter(text, validCharacters, addedChar);
-
-        input.onValueChanged.AddListener((text) => CheckAllMandatoryInputs());
-    }
-
-    private void SetDigitInputField(TMP_InputField input, int characterAmount, string validCharacters)
-    {
-
-        input.characterLimit = characterAmount;
-
-        input.onValidateInput = (string text, int charIndex, char addedChar) => ValidateDigitCharacter(text, validCharacters, addedChar);
-
-        input.onValueChanged.AddListener((text) => CheckAllMandatoryInputs());
-
-
-        input.onEndEdit.AddListener((string text) =>
-        {
-            if (text.EndsWith("."))
-                text = text.TrimEnd('.');
-
-            input.text = text;
-        });
-    }
-
 
     #endregion
 
@@ -158,38 +123,6 @@ public class M_UI_CreateHabit : MonoBehaviour
         M_UI_ColorPicker.singleton.ChangeSelectedColor(0);
 
         CheckAllMandatoryInputs();
-    }
-
-
-    private void ChangeToogleIcon(bool val) => toggleHabitType.GetComponent<Image>().sprite = !val ? toggleOff : toggleOn; 
-
-
-    private char ValidateCharacter(string text, string validCharacters, char characterToAdd)
-    {
-        string signs = ".!?";
-
-        if (validCharacters.IndexOf(characterToAdd) != -1)
-            return characterToAdd;
-        else if (signs.Contains(characterToAdd) && text.Length > 0)
-            return characterToAdd;
-
-        return '\0';
-    }
-
-    private char ValidateDigitCharacter(string text, string validCharacters, char characterToAdd)
-    {
-        char invalidChar = '\0';
-
-
-        if (validCharacters.IndexOf(characterToAdd) == -1)
-            return invalidChar;
-        else if (text.Length == 1 && text[0] == '0' && characterToAdd != '.')
-            return invalidChar;
-        else if (text.Contains(characterToAdd) && characterToAdd == '.')
-            return invalidChar;
-
-
-        return characterToAdd;
     }
 
     private void CheckAllMandatoryInputs()

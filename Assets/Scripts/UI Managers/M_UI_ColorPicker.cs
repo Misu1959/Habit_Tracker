@@ -8,7 +8,7 @@ public class M_UI_ColorPicker : MonoBehaviour
     public static M_UI_ColorPicker singleton;
 
 
-    [Header("\nIn scene objects")]
+    [Header("In scene objects")]
     [SerializeField] private Image imageHabitColor;
 
     [SerializeField] private Transform colorsList;

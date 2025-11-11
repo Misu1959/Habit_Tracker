@@ -9,7 +9,7 @@ public class M_UI_Main : MonoBehaviour
 {
     public static M_UI_Main singleton;
 
-    [Header("\nIn scene objects")]
+    [Header("In scene objects")]
     [SerializeField] private Button buttonOpenCreateHabitMenu;
     [SerializeField] private Button buttonOpenSorHabitsMenu;
 
@@ -42,10 +42,9 @@ public class M_UI_Main : MonoBehaviour
 
     private void Setup()
     {
-        panelUpdateHabit.GetComponent<Button>().onClick.AddListener(CloseUpdateHabitMenu);
-        panelColorPicker.GetComponent<Button>().onClick.AddListener(CloseColorPickerMenu);
-        panelSortHabits.GetComponent<Button>().onClick.AddListener(CloseSortHabitsMenu);
-
+        panelUpdateHabit.GetComponent<ClickHandler>().action = CloseUpdateHabitMenu;
+        panelColorPicker.GetComponent<ClickHandler>().action = CloseColorPickerMenu;
+        panelSortHabits.GetComponent<ClickHandler>().action = CloseSortHabitsMenu;
 
         SetButtonOpenCreateHabitMenu();
         SetButtonOpenSortHabitsMenu();

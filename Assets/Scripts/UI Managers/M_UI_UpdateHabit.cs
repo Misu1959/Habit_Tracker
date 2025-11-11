@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
-using System.Runtime.CompilerServices;
 
 public class M_UI_UpdateHabit : MonoBehaviour
 {
@@ -11,6 +10,13 @@ public class M_UI_UpdateHabit : MonoBehaviour
     public static M_UI_UpdateHabit singleton;
 
 
+    [Header("Sprites")]
+    [SerializeField] private Sprite toggleCross;
+    [SerializeField] private Sprite toggleCheck;
+
+
+
+    [Header("\nIn scene objects")]
     [SerializeField] private Button buttonUpdateData;
 
     [SerializeField] private Toggle toggleUpdate;
@@ -36,10 +42,11 @@ public class M_UI_UpdateHabit : MonoBehaviour
         bool activeType = habitToUpdate.data.type == HabitType.yesOrNo;
 
         toggleUpdate.gameObject.SetActive(activeType);
-        inputFieldUpdate.gameObject.SetActive(!activeType);
-
         toggleUpdate.isOn = habitToUpdate.data.currentAmount > 0;
-        inputFieldUpdate.text = habitToUpdate.data.currentAmount + " / " + habitToUpdate.data.targetAmount; 
+
+        inputFieldUpdate.gameObject.SetActive(!activeType);
+        inputFieldUpdate.text = habitToUpdate.data.currentAmount.ToString();
+        inputFieldUpdate.transform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>().text = "/" + habitToUpdate.data.targetAmount + habitToUpdate.data.unit;
     }
 
 
@@ -59,11 +66,19 @@ public class M_UI_UpdateHabit : MonoBehaviour
     private void Setup()
     {
         SetButtonUpdateData();
+        SetToggleUpdate();
     }
+
 
     private void SetButtonUpdateData()
     {
         buttonUpdateData.onClick.AddListener(() => Debug.Log("Saved"));
         buttonUpdateData.onClick.AddListener(M_UI_Main.singleton.CloseUpdateHabitMenu);
     }
+
+    private void SetToggleUpdate()
+    {
+        toggleUpdate.onValueChanged.AddListener((val) => toggleUpdate.GetComponent<Image>().sprite = !val ? toggleCross : toggleCheck);
+    }
+
 }
