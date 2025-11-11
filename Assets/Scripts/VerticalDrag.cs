@@ -29,9 +29,6 @@ public class VerticalDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     [SerializeField] private float maxHoldTime;
 
 
-
-
-
     void Update() => CheckSortingTimer();
 
 
@@ -46,22 +43,21 @@ public class VerticalDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        if(dragType == DragType.sort)
+            sortedObject.EndSorting();
 
-        if (dragType == DragType.pressed)
-        {
-            dragType = DragType.none;
+        dragType = DragType.none;
 
-            if (holdTime <= minHoldTime)
-                GetComponent<Button>()?.onClick.Invoke();
-        }
-    } 
+        Invoke(nameof(Fct), .01f);
+    }
 
-
+    void Fct() => sortedObject.GetComponent<Habit>().TurnButtonsOnOff(true);
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        sortedObject.GetComponent<Habit>().TurnButtonsOnOff(false);
 
-        switch(dragType)
+        switch (dragType)
         {
             case DragType.pressed:
                 dragType = DragType.scroll;
@@ -89,6 +85,8 @@ public class VerticalDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        sortedObject.GetComponent<Habit>().TurnButtonsOnOff(true);
+
         switch (dragType)
         {
             case DragType.scroll:
@@ -115,6 +113,8 @@ public class VerticalDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         if (holdTime == maxHoldTime)
         {
+            sortedObject.GetComponent<Habit>().TurnButtonsOnOff(false);
+
             dragType = DragType.sort;
 
             sortedObject.StartSorting();

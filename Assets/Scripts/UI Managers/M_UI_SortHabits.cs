@@ -6,7 +6,7 @@ using System.Linq;
 using static UnityEditor.Progress;
 
 
-public enum SortionType
+public enum SortingType
 {
     manually,
     byName,
@@ -15,7 +15,7 @@ public enum SortionType
     byStatus
 };
 
-public enum SortionWay
+public enum SortingWay
 {
     both,
     up,
@@ -44,13 +44,22 @@ public class M_UI_SortHabits : MonoBehaviour
     [SerializeField] private Button buttonSortByStatus;
 
 
-    private SortionType sortType;
-    private SortionWay sortWay;
+    private SortingType sortType;
+    private SortingWay sortWay;
 
     private void Awake() => Initialize();
 
-    void Start() => Setup();
+    void Start()
+    {
+        Setup();
 
+        M_SaveLoad.LoadSortingData(out SortingType loadedSortType, out SortingWay loadedSortWay);
+
+        ChangeSelectedSortingType(loadedSortType);
+        ChangeSelectedSortingWay(loadedSortWay);
+
+        Sort();
+    }
     private void Initialize()
     {
         if (singleton == null)
@@ -72,69 +81,96 @@ public class M_UI_SortHabits : MonoBehaviour
     private void SetButtonSortManually()
     {
         buttonSortManually.onClick.AddListener(M_UI_Main.singleton.CloseSortHabitsMenu);
-        buttonSortManually.onClick.AddListener(() => SetSelectedSortionType(buttonSortManually.transform,SortionType.manually));
+        buttonSortManually.onClick.AddListener(() => SetSelectedSortingType(SortingType.manually));
     }
 
 
     private void SetButtonSortByName()
     {
         buttonSortByName.onClick.AddListener(M_UI_Main.singleton.CloseSortHabitsMenu);
-        buttonSortByName.onClick.AddListener(() => SetSelectedSortionType(buttonSortByName.transform, SortionType.byName));
-        buttonSortByName.onClick.AddListener(() => Invoke(nameof(SortByName), .1f));
+        buttonSortByName.onClick.AddListener(() => SetSelectedSortingType(SortingType.byName));
+        buttonSortByName.onClick.AddListener(() => Invoke(nameof(Sort), .1f));
     }
 
     private void SetButtonSortByType()
     {
         buttonSortByType.onClick.AddListener(M_UI_Main.singleton.CloseSortHabitsMenu);
-        buttonSortByType.onClick.AddListener(() => SetSelectedSortionType(buttonSortByType.transform, SortionType.byType));
-        buttonSortByType.onClick.AddListener(() => Invoke(nameof(SortByType), .1f));
+        buttonSortByType.onClick.AddListener(() => SetSelectedSortingType(SortingType.byType));
+        buttonSortByType.onClick.AddListener(() => Invoke(nameof(Sort), .1f));
     }
 
     private void SetButtonSortByColor()
     {
         buttonSortByColor.onClick.AddListener(M_UI_Main.singleton.CloseSortHabitsMenu);
-        buttonSortByColor.onClick.AddListener(() => SetSelectedSortionType(buttonSortByColor.transform, SortionType.byColor));
-        buttonSortByColor.onClick.AddListener(() => Invoke(nameof(SortByColor), .1f));
+        buttonSortByColor.onClick.AddListener(() => SetSelectedSortingType(SortingType.byColor));
+        buttonSortByColor.onClick.AddListener(() => Invoke(nameof(Sort), .1f));
     }
 
     private void SetButtonSortByStatus()
     {
         buttonSortByStatus.onClick.AddListener(M_UI_Main.singleton.CloseSortHabitsMenu);
-        buttonSortByStatus.onClick.AddListener(() => SetSelectedSortionType(buttonSortByStatus.transform, SortionType.byStatus));
-        buttonSortByStatus.onClick.AddListener(() => Invoke(nameof(SortByStatus), .1f));
+        buttonSortByStatus.onClick.AddListener(() => SetSelectedSortingType(SortingType.byStatus));
+        buttonSortByStatus.onClick.AddListener(() => Invoke(nameof(Sort), .1f));
     }
 
 
 
-    private void SetSelectedSortionType(Transform selectedSortionType, SortionType newSortType)
+    private void SetSelectedSortingType(SortingType newSortType)
     {
-        SetSelectedSortionWay(newSortType);
+        SetSelectedSortingWay(newSortType);
 
-        
-        imageSelectedSortionType.transform.SetParent(selectedSortionType);
+
+        imageSelectedSortionType.transform.SetParent(buttonSortManually.transform.parent.GetChild((int)newSortType));
         imageSelectedSortionType.transform.localPosition = new Vector2(imageSelectedSortionType.transform.localPosition.x, 0);
 
         sortType = newSortType;
     }
 
-    private void SetSelectedSortionWay(SortionType newSortType)
+    private void SetSelectedSortingWay(SortingType newSortType)
     {
-        if (newSortType == SortionType.manually)
-            sortWay = SortionWay.both;
+        if (newSortType == SortingType.manually)
+            sortWay = SortingWay.both;
         else if (sortType != newSortType)
-            sortWay = SortionWay.up;
+            sortWay = SortingWay.up;
         else
-            sortWay = (sortWay == SortionWay.up) ? SortionWay.down : SortionWay.up;
+            sortWay = (sortWay == SortingWay.up) ? SortingWay.down : SortingWay.up;
 
         switch (sortWay)
         {
-            case SortionWay.both:
+            case SortingWay.both:
                 imageSelectedSortionType.sprite = spriteSortBoth;
                 break;
-            case SortionWay.up:
+            case SortingWay.up:
                 imageSelectedSortionType.sprite = spriteSortUp;
                 break;
-            case SortionWay.down:
+            case SortingWay.down:
+                imageSelectedSortionType.sprite = spriteSortDown;
+                break;
+        }
+    }
+
+    private void ChangeSelectedSortingType(SortingType newSortType)
+    {
+        sortType = newSortType;
+
+        imageSelectedSortionType.transform.SetParent(buttonSortManually.transform.parent.GetChild((int)sortType));
+        imageSelectedSortionType.transform.localPosition = new Vector2(imageSelectedSortionType.transform.localPosition.x, 0);
+
+    }
+
+    private void ChangeSelectedSortingWay(SortingWay newSortingWay)
+    {
+        sortWay = newSortingWay;
+
+        switch (sortWay)
+        {
+            case SortingWay.both:
+                imageSelectedSortionType.sprite = spriteSortBoth;
+                break;
+            case SortingWay.up:
+                imageSelectedSortionType.sprite = spriteSortUp;
+                break;
+            case SortingWay.down:
                 imageSelectedSortionType.sprite = spriteSortDown;
                 break;
         }
@@ -142,10 +178,36 @@ public class M_UI_SortHabits : MonoBehaviour
 
 
 
+    public void Sort()
+    {
+        switch(sortType)
+        {
+            case SortingType.manually:
+                break;
+            case SortingType.byName:
+                SortByName();
+                break;
+            case SortingType.byType:
+                SortByType();
+                break;
+            case SortingType.byColor:
+                SortByColor();
+                break;
+            case SortingType.byStatus:
+                SortByStatus();
+                break;
+        }
+
+        M_SaveLoad.SaveSortingData(sortType, sortWay);
+    }
+
+
+
+
     private void SortByName()
     {
 
-        if(sortWay == SortionWay.up)
+        if(sortWay == SortingWay.up)
             M_Habits.singleton.habitList = M_Habits.singleton.habitList.OrderBy(habit => habit.data.name).ToList();
         else
             M_Habits.singleton.habitList = M_Habits.singleton.habitList.OrderByDescending(habit => habit.data.name).ToList();
@@ -156,7 +218,7 @@ public class M_UI_SortHabits : MonoBehaviour
     private void SortByType()
     {
 
-        if (sortWay == SortionWay.up)
+        if (sortWay == SortingWay.up)
             M_Habits.singleton.habitList.Sort((habit1, habit2) => CompareType(habit1, habit2, false));
         else
             M_Habits.singleton.habitList.Sort((habit1, habit2) => CompareType(habit2, habit1, true));
@@ -167,7 +229,7 @@ public class M_UI_SortHabits : MonoBehaviour
 
     private void SortByColor()
     {
-        if (sortWay == SortionWay.up)
+        if (sortWay == SortingWay.up)
             M_Habits.singleton.habitList.Sort((habit1, habit2) => CompareBrightness(habit1, habit2, false));
         else
             M_Habits.singleton.habitList.Sort((habit1, habit2) => CompareBrightness(habit2, habit1, true));
@@ -177,7 +239,7 @@ public class M_UI_SortHabits : MonoBehaviour
 
     private void SortByStatus()
     {
-        if (sortWay == SortionWay.up)
+        if (sortWay == SortingWay.up)
             M_Habits.singleton.habitList.Sort((habit1, habit2) => CompareStatus(habit1, habit2, false));
         else
             M_Habits.singleton.habitList.Sort((habit1, habit2) => CompareStatus(habit2, habit1, true));

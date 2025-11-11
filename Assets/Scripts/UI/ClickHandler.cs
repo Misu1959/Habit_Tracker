@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ClickHandler : MonoBehaviour, IPointerClickHandler
 {
-    public Action action { private get; set; }
+    public Action action;
 
 
     public void OnPointerClick(PointerEventData eventData)

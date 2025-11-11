@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using System;
+using UnityEngine.Events;
 
 public class M_UI_ColorPicker : MonoBehaviour
 {
@@ -12,7 +14,7 @@ public class M_UI_ColorPicker : MonoBehaviour
     [SerializeField] private Image imageHabitColor;
 
     [SerializeField] private Transform colorsList;
-
+    [SerializeField] private Transform colorCheck;
 
 
     private void Awake() => Initialize();
@@ -33,24 +35,37 @@ public class M_UI_ColorPicker : MonoBehaviour
         {
             color.GetComponent<Button>().onClick.AddListener(() => ChangeSelectedColor(color.GetSiblingIndex()));
             color.GetComponent<Button>().onClick.AddListener(M_UI_Main.singleton.CloseColorPickerMenu);
+            color.GetComponent<Button>().onClick.AddListener(AddRecolorAction);
         }
 
     }
 
+    private void AddRecolorAction()
+    {
+        if (!M_UI_Main.singleton.panelDisplayHabit.gameObject.activeInHierarchy)
+            return;
+
+        M_UI_DisplayHabit.singleton.GetDisplayHabit().Recolor(imageHabitColor.color);
+    }
+    
+
+
     public void ChangeSelectedColor(int colorIndex)
     {
-        Transform colorCheck = null;
-
-        foreach (Transform color in colorsList)
-            if (color.childCount > 0)
-            {
-                colorCheck = color.GetChild(0);
-                break;
-            }
-
         colorCheck.SetParent(colorsList.GetChild(colorIndex));
         colorCheck.localPosition = Vector2.zero;
 
         imageHabitColor.color = colorsList.GetChild(colorIndex).GetComponent<Image>().color;
+    }
+
+    public void ChangeSelectedColor(Color color)
+    {
+        int colorIndex;
+
+        for (colorIndex = 0; colorIndex < colorsList.childCount; colorIndex++)
+            if (colorsList.GetChild(colorIndex).GetComponent<Image>().color == color)
+                break;
+
+        ChangeSelectedColor(colorIndex);
     }
 }

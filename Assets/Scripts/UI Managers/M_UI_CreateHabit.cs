@@ -78,7 +78,7 @@ public class M_UI_CreateHabit : MonoBehaviour
     private void SetButtonCreateHabit()
     {
         buttonCreateHabit.onClick.AddListener(M_UI_Main.singleton.CloseCreateHabitMenu);
-        buttonCreateHabit.onClick.AddListener(() => M_Habits.singleton.CreateHabit(new HabitData(habitType, habitColor, habitName, habitQuestion, habitUnit, habitAmount)));
+        buttonCreateHabit.onClick.AddListener(() => M_Habits.singleton.CreateHabit(new HabitData(habitType, habitColor, habitName, habitQuestion, habitUnit, habitAmount), false));
     }
 
 

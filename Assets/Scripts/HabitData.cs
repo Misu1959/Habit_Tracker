@@ -15,7 +15,7 @@ public enum HabitType
 public class HabitData
 {
     public HabitType type { get; private set; }
-    public Color color { get; private set; } = Color.blue;
+    public Color color { get; private set; }
 
     public string name { get; private set; }
     public string question { get; private set; }
@@ -42,5 +42,10 @@ public class HabitData
         completionValue = currentAmount / targetAmount;
     }
 
-
+    public void Update(float newAmount)
+    {
+        currentAmount = newAmount;
+        completionValue = currentAmount / targetAmount;
+    }
+    public void UpdateColor(Color newColor) => color = newColor;
 }
