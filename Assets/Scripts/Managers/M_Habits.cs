@@ -14,9 +14,6 @@ public class M_Habits : MonoBehaviour
 
 
     [HideInInspector] public List<Habit> habitList;
-    private int nrOfHabits;
-
-
 
     private void Awake() => Initialize();
     
@@ -33,10 +30,8 @@ public class M_Habits : MonoBehaviour
 
     private void Setup()
     {
-        nrOfHabits = M_SaveLoad.LoadNrOfHabits();
-
-        for (int i = 0; i < nrOfHabits; i++)
-            CreateHabit(M_SaveLoad.LoadHabitData(i+1), true);
+        for (int i = 0; i < M_SaveLoad.LoadNrOfHabits(); i++)
+            CreateHabit(M_SaveLoad.LoadHabitData(i), true);
     }
 
 
@@ -61,10 +56,8 @@ public class M_Habits : MonoBehaviour
 
         if (!loadHabit)
         {
-            nrOfHabits++;
-            
-            M_SaveLoad.SaveNrOfHabits(nrOfHabits);
-            M_SaveLoad.SaveHabitData(nrOfHabits, newData);
+            M_SaveLoad.SaveNrOfHabits(habitList.Count);
+            M_SaveLoad.SaveHabitData(habit);
         }
     }
 
@@ -74,6 +67,8 @@ public class M_Habits : MonoBehaviour
         M_SaveLoad.DeleteHabitData(habit.data.name);
         Destroy(habit.gameObject);
         habitList.Remove(habit);
+
+        M_SaveLoad.SaveNrOfHabits(habitList.Count);
     }
 
 }

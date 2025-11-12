@@ -130,19 +130,22 @@ public class M_UI_Main : MonoBehaviour
     }
     public void TurnLayoutOff()
     {
-        panelHabits.GetComponent<ContentSizeFitter>().enabled = false;
         panelHabits.GetComponent<VerticalLayoutGroup>().enabled = false;
+        panelHabits.GetComponent<ContentSizeFitter>().enabled = false;
     }
-    public void RefreshLayout()
+
+    public IEnumerator RefreshLayout()
     {
         if (panelHabits.GetComponent<VerticalLayoutGroup>().enabled)
         {
             TurnLayoutOff();
 
+
             for (int i = 0; i < M_Habits.singleton.habitList.Count; i++)
                 M_Habits.singleton.habitList[i].transform.SetSiblingIndex(i);
 
-            Invoke(nameof(TurnLayoutOn), .025f);
+            yield return null;
+            TurnLayoutOn();
         }
         else
         {
@@ -151,7 +154,8 @@ public class M_UI_Main : MonoBehaviour
             for (int i = 0; i < M_Habits.singleton.habitList.Count; i++)
                 M_Habits.singleton.habitList[i].transform.SetSiblingIndex(i);
 
-            Invoke(nameof(TurnLayoutOff), .025f);
+            yield return null;
+            TurnLayoutOff();
         }
     }
 

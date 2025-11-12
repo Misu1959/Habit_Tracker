@@ -27,7 +27,6 @@ public class HabitData
 
     public float completionValue {  get; private set; }
 
-
     public HabitData(HabitType _type, Color _color, string _name, string _question, string _unit, float _targetAmount)
     {
         type        = _type;

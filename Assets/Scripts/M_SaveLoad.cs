@@ -9,6 +9,7 @@ public class M_SaveLoad : MonoBehaviour
 
 
     private const string HABIT      = "habit";
+    private const string KEY        = "key";
 
     private const string TYPE       = "type";
     private const string COLOR      = "color";
@@ -92,21 +93,20 @@ public class M_SaveLoad : MonoBehaviour
         => PlayerPrefs.SetInt(NR_OF_HABITS, amount);
 
 
-
-    public static void SaveHabitData(int key, HabitData habitDataToSave)
+    public static void SaveHabitData(Habit habitToSave)
     {
+        HabitData data = habitToSave.data;
 
+        SaveHabitType(data.name, data.type.ToString());
+        SaveHabitColor(data.name, data.color);
 
-        SaveHabitType(habitDataToSave.name, habitDataToSave.type.ToString());
-        SaveHabitColor(habitDataToSave.name, habitDataToSave.color);
-
-        SaveHabitName(key, habitDataToSave.name);
-        SaveHabitQuestion(habitDataToSave.name, habitDataToSave.question);
+        SaveHabitName(habitToSave);
+        SaveHabitQuestion(data.name, data.question);
         
-        SaveHabitUnit(habitDataToSave.name, habitDataToSave.unit);
-        SaveHabitTarget(habitDataToSave.name, habitDataToSave.targetAmount);
+        SaveHabitUnit(data.name, data.unit);
+        SaveHabitTarget(data.name, data.targetAmount);
         
-        SaveHabitCreationDate(habitDataToSave.name, DateTime.Today);
+        SaveHabitCreationDate(data.name, DateTime.Today);
     }
 
 
@@ -121,8 +121,8 @@ public class M_SaveLoad : MonoBehaviour
     }
 
 
-    private static void SaveHabitName(int key, string name)
-        => PlayerPrefs.SetString(HABIT + key + NAME, name);
+    public static void SaveHabitName(Habit habit)
+        => PlayerPrefs.SetString(HABIT + habit.transform.GetSiblingIndex() + NAME, habit.data.name);
     private static void SaveHabitQuestion(string name, string question)
         => PlayerPrefs.SetString(HABIT + name + QUESTION, question);
 
@@ -175,8 +175,6 @@ public class M_SaveLoad : MonoBehaviour
 
     public static int LoadNrOfHabits()
         => PlayerPrefs.GetInt(NR_OF_HABITS);
-
-
 
     public static HabitData LoadHabitData(int key)
     {
@@ -258,8 +256,6 @@ public class M_SaveLoad : MonoBehaviour
         DeleteHabitInfo(name);        // Delete data from all dates
         DeleteHabitInfoDates(name);   // Delete all dates
         DeleteHabitNrOfDates(name);   // Delete number of dates
-
-        SaveNrOfHabits(LoadNrOfHabits() - 1);
     }
 
 

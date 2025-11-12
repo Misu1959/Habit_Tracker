@@ -65,7 +65,8 @@ public class M_UI_DisplayHabit : MonoBehaviour
     {
         buttonDeleteHabit.onClick.AddListener(() => M_Habits.singleton.DestroyHabit(habitToDisplay));
         buttonDeleteHabit.onClick.AddListener(M_UI_Main.singleton.CloseDisplayHabitMenu);
-        buttonDeleteHabit.onClick.AddListener(M_UI_Main.singleton.RefreshLayout);
+        buttonDeleteHabit.onClick.AddListener(() => StartCoroutine(M_UI_Main.singleton.RefreshLayout()));
+
     }
 
 

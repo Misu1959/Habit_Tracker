@@ -22,9 +22,11 @@ public class SortedObject : MonoBehaviour
         initialPosition = rectTransform.anchoredPosition;
         layoutSize = transform.parent.GetComponent<RectTransform>().rect.height;
 
-        M_UI_Main.singleton.TurnLayoutOff();
 
         GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+
+        M_UI_Main.singleton.TurnLayoutOff();
+        M_UI_SortHabits.singleton.ChangeSortingData(SortingType.manually);
     }
 
     public void Sort(PointerEventData eventData)
@@ -36,8 +38,11 @@ public class SortedObject : MonoBehaviour
 
     public void EndSorting()
     {
-        M_UI_Main.singleton.TurnLayoutOn();
         GetComponent<Image>().color = new Color32(255, 255, 255, 0);
+        M_UI_Main.singleton.TurnLayoutOn();
+
+        M_UI_SortHabits.singleton.Sort();
+
     }
 
 
@@ -71,7 +76,7 @@ public class SortedObject : MonoBehaviour
                 M_Habits.singleton.habitList[index] = M_Habits.singleton.habitList[i];
                 M_Habits.singleton.habitList[i] = aux;
 
-                M_UI_Main.singleton.RefreshLayout();
+                StartCoroutine(M_UI_Main.singleton.RefreshLayout());
                 break;
             }
         }
@@ -87,7 +92,7 @@ public class SortedObject : MonoBehaviour
                 M_Habits.singleton.habitList[index] = M_Habits.singleton.habitList[i];
                 M_Habits.singleton.habitList[i] = aux;
 
-                M_UI_Main.singleton.RefreshLayout();
+                StartCoroutine(M_UI_Main.singleton.RefreshLayout());
                 break;
             }
         }
