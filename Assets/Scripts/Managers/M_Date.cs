@@ -7,7 +7,13 @@ public class M_Date : MonoBehaviour
 
 
     public DateTime today => DateTime.Today;
-    public DateTime startOfWeek => today.AddDays(-(int)today.DayOfWeek + 1);
+    public DateTime startOfWeek 
+    { 
+        get
+        {
+            return today.AddDays(-(7 + (today.DayOfWeek - DayOfWeek.Monday)) % 7);
+        }
+    }
 
 
     private void Awake() => Initialize();
@@ -24,7 +30,6 @@ public class M_Date : MonoBehaviour
 
     private void Setup()
     {
-
     }
 
 }

@@ -89,9 +89,13 @@ public class M_SaveLoad : MonoBehaviour
 
     #region Save
 
-    public static void SaveNrOfHabits(int amount)
-        => PlayerPrefs.SetInt(NR_OF_HABITS, amount);
+    public static void SaveNrOfHabits()
+    {
+        PlayerPrefs.SetInt(NR_OF_HABITS, M_Habits.singleton.habitList.Count);
 
+        foreach (Habit habit in M_Habits.singleton.habitList)
+            SaveHabitName(habit);
+    }
 
     public static void SaveHabitData(Habit habitToSave)
     {
@@ -121,7 +125,7 @@ public class M_SaveLoad : MonoBehaviour
     }
 
 
-    public static void SaveHabitName(Habit habit)
+    private static void SaveHabitName(Habit habit)
         => PlayerPrefs.SetString(HABIT + habit.transform.GetSiblingIndex() + NAME, habit.data.name);
     private static void SaveHabitQuestion(string name, string question)
         => PlayerPrefs.SetString(HABIT + name + QUESTION, question);

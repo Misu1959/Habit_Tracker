@@ -51,7 +51,7 @@ public class M_UI_UpdateHabit : MonoBehaviour
 
         inputFieldUpdate.gameObject.SetActive(!activeType);
         inputFieldUpdate.text = M_SaveLoad.GetHabitInfo(newHabitToUpdate.data.name, updateDay).ToString();
-        inputFieldUpdate.transform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>().text = "/" + habitToUpdate.data.targetAmount + habitToUpdate.data.unit;
+        inputFieldUpdate.transform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>().text = " / " + habitToUpdate.data.targetAmount + " " + habitToUpdate.data.unit;
     }
 
 

@@ -30,7 +30,11 @@ public class M_UI_Main : MonoBehaviour
 
 
 
-    private void Awake() => Initialize();
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+        Initialize();
+    }
 
     void Start()
     {

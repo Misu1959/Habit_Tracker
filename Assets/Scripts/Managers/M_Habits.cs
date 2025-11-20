@@ -56,7 +56,7 @@ public class M_Habits : MonoBehaviour
 
         if (!loadHabit)
         {
-            M_SaveLoad.SaveNrOfHabits(habitList.Count);
+            M_SaveLoad.SaveNrOfHabits();
             M_SaveLoad.SaveHabitData(habit);
         }
     }
@@ -65,10 +65,16 @@ public class M_Habits : MonoBehaviour
     public void DestroyHabit(Habit habit)
     {
         M_SaveLoad.DeleteHabitData(habit.data.name);
-        Destroy(habit.gameObject);
-        habitList.Remove(habit);
 
-        M_SaveLoad.SaveNrOfHabits(habitList.Count);
+        habitList.Remove(habit);
+        Destroy(habit.gameObject);
+
+        StartCoroutine(RemData());
     }
 
+    IEnumerator RemData()
+    {
+        yield return new WaitForSeconds(.1f);
+        M_SaveLoad.SaveNrOfHabits();
+    }
 }

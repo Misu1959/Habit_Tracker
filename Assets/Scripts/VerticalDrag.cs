@@ -46,13 +46,14 @@ public class VerticalDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         if(dragType == DragType.sort)
             sortedObject.EndSorting();
 
-        dragType = DragType.none;
-
         Invoke(nameof(Fct), .01f);
     }
 
-    void Fct() => sortedObject.GetComponent<Habit>().TurnButtonsOnOff(true);
-
+    void Fct()
+    {
+        sortedObject.GetComponent<Habit>().TurnButtonsOnOff(true);
+        dragType = DragType.none;
+    }
     public void OnBeginDrag(PointerEventData eventData)
     {
         sortedObject.GetComponent<Habit>().TurnButtonsOnOff(false);
@@ -99,9 +100,6 @@ public class VerticalDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                 break;
         }
     }
-
-
-
 
     private void CheckSortingTimer()
     {

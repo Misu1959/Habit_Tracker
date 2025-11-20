@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Linq;
-using static UnityEditor.Progress;
 
 
 public enum SortingType
@@ -178,8 +177,7 @@ public class M_UI_SortHabits : MonoBehaviour
 
         M_SaveLoad.SaveSortingData(sortType, sortWay);
 
-        foreach (Habit habit in M_Habits.singleton.habitList)
-            M_SaveLoad.SaveHabitName(habit);
+        M_SaveLoad.SaveNrOfHabits();
     }
 
 

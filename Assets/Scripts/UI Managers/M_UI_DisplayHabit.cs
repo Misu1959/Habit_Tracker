@@ -19,6 +19,8 @@ public class M_UI_DisplayHabit : MonoBehaviour
     [SerializeField] private Button buttonRecolorHabit;
     [SerializeField] private Button buttonDeleteHabit;
 
+
+    [SerializeField] private ScrollRect scrollRectPages;
     
     public Habit GetDisplayHabit() => habitToDisplay;
     public void SetHabitToDisplay(Habit newHabitToDisplay)
@@ -54,6 +56,7 @@ public class M_UI_DisplayHabit : MonoBehaviour
     private void SetButtonGoBack()
     {
         buttonGoBack.onClick.AddListener(M_UI_Main.singleton.CloseDisplayHabitMenu);
+        buttonGoBack.onClick.AddListener(SetScrollRectPosition);
     }
 
     private void SetButtonRecolorHabit()
@@ -72,7 +75,7 @@ public class M_UI_DisplayHabit : MonoBehaviour
 
 
     #endregion
-
+    
     #region Methods
 
     private void RefreshDisplayData()
@@ -82,10 +85,35 @@ public class M_UI_DisplayHabit : MonoBehaviour
         DisplayHabitName();
     }
 
-
-
     private void DisplayHabitName() => textName.text = habitToDisplay.data.name;
 
 
+    private void SetScrollRectPosition() => scrollRectPages.horizontalNormalizedPosition = 0;
+
     #endregion
+
+
+
+    #region Stats Comparison 
+
+
+    #endregion
+
+
+    #region History
+
+
+    #endregion
+
+
+    #region Calendar
+
+    [Header("Calendar")]
+    [SerializeField] private Button buttonMonth;
+    [SerializeField] private Button buttonYear;
+    [SerializeField] private Dropdown dropDownValue;
+
+
+    #endregion
+
 }
