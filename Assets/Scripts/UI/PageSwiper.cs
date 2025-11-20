@@ -44,11 +44,9 @@ public class PageSwiper : MonoBehaviour
             isDragging = false;
 
             float dragDistance = Input.mousePosition.x - startDragPos.x;
-            // If drag exceeds threshold, move to next/previous page
+         
             if (Mathf.Abs(dragDistance / Screen.width) > swipeThreshold)
-            {
                 MovePage(dragDistance);
-            }
         }
     }
 
