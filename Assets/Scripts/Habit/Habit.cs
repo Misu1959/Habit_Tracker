@@ -49,7 +49,7 @@ public class Habit : MonoBehaviour
             int curentVal = val;
             val++;
 
-            DateTime day = M_Date.singleton.startOfWeek.AddDays(curentVal);
+            DateTime day = M_Date.singleton.startOfCurrentWeek.AddDays(curentVal);
 
 
             if (day != DateTime.Today)
@@ -88,8 +88,12 @@ public class Habit : MonoBehaviour
         DisplayInfo();
     }
 
-    private bool IsGoalAchieved(DateTime dayToCheck) => M_SaveLoad.GetHabitInfo(data.name, dayToCheck) < data.targetAmount ? false : true;
+    private bool IsGoalAchieved(DateTime dayToCheck)
+    {
+        M_SaveLoad.LoadHabitDay(data.name, dayToCheck, out int completion, out float value);
 
+        return completion > 0;
+    }
 
     public void DisplayInfo()
     {
@@ -101,7 +105,7 @@ public class Habit : MonoBehaviour
         for (int i = 0; i < 7; i++)
         {
 
-            DateTime dayOfWeek = M_Date.singleton.startOfWeek.AddDays(i);
+            DateTime dayOfWeek = M_Date.singleton.startOfCurrentWeek.AddDays(i);
 
             if (data.type == HabitType.yesOrNo)
             {
@@ -114,8 +118,10 @@ public class Habit : MonoBehaviour
             }
             else
             {
+                M_SaveLoad.LoadHabitDay(data.name, dayOfWeek, out int completion, out float value);
+
                 TextMeshProUGUI weekDayText = weekDays.GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>();
-                weekDayText.text = M_SaveLoad.GetHabitInfo(data.name, dayOfWeek) + "/" + data.targetAmount + "\n" + data.unit;
+                weekDayText.text = value + "/" + data.targetAmount + "\n" + data.unit;
             }
         }
 
@@ -129,7 +135,7 @@ public class Habit : MonoBehaviour
 
         for (int i = 0; i < 7; i++)
         {
-            DateTime dayOfWeek = M_Date.singleton.startOfWeek.AddDays(i);
+            DateTime dayOfWeek = M_Date.singleton.startOfCurrentWeek.AddDays(i);
 
             Color32 color;
 

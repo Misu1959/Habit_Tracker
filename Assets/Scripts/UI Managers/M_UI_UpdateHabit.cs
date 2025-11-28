@@ -43,14 +43,17 @@ public class M_UI_UpdateHabit : MonoBehaviour
 
         bool activeType = habitToUpdate.data.type == HabitType.yesOrNo;
 
-        
+
+        M_SaveLoad.LoadHabitDay(newHabitToUpdate.data.name, updateDay, out int completion, out float value);
+
+
         toggleUpdate.gameObject.SetActive(activeType);
-        toggleUpdate.isOn = M_SaveLoad.GetHabitInfo(newHabitToUpdate.data.name, updateDay) > 0;
+        toggleUpdate.isOn = completion > 0;
         toggleUpdate.transform.GetChild(0).GetComponent<Image>().sprite = !toggleUpdate.isOn ? toggleCross : toggleCheck;
 
 
         inputFieldUpdate.gameObject.SetActive(!activeType);
-        inputFieldUpdate.text = M_SaveLoad.GetHabitInfo(newHabitToUpdate.data.name, updateDay).ToString();
+        inputFieldUpdate.text = value.ToString();
         inputFieldUpdate.transform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>().text = " / " + habitToUpdate.data.targetAmount + " " + habitToUpdate.data.unit;
     }
 
@@ -96,7 +99,7 @@ public class M_UI_UpdateHabit : MonoBehaviour
         else
             newValue = float.Parse(inputFieldUpdate.text);
 
-        M_SaveLoad.UpdateHabitInfo(habitToUpdate.data.name, updateDay, newValue);
+        M_SaveLoad.UpdateHabit(habitToUpdate.data.name, updateDay, newValue);
         habitToUpdate.UpdateData(newValue);
     }
 }

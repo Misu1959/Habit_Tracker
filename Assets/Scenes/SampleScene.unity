@@ -747,7 +747,7 @@ GameObject:
   m_Component:
   - component: {fileID: 20382094}
   m_Layer: 5
-  m_Name: Comparison
+  m_Name: Comparison Streak
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1582,7 +1582,7 @@ GameObject:
   - component: {fileID: 50539092}
   - component: {fileID: 50539091}
   m_Layer: 5
-  m_Name: Dropdown Value Type
+  m_Name: Dropdown Calendar Type
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8591,7 +8591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f3eb76260fd7f8d48bc738c142913abb, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -11672,7 +11672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f3eb76260fd7f8d48bc738c142913abb, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -13881,7 +13881,7 @@ GameObject:
   m_Component:
   - component: {fileID: 706669332}
   m_Layer: 5
-  m_Name: Comparison
+  m_Name: Comparison Month
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14059,7 +14059,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f3eb76260fd7f8d48bc738c142913abb, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -17529,7 +17529,7 @@ GameObject:
   m_Component:
   - component: {fileID: 938711216}
   m_Layer: 5
-  m_Name: Comparison
+  m_Name: Comparison Week
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22665,7 +22665,7 @@ GameObject:
   - component: {fileID: 1259090961}
   - component: {fileID: 1259090960}
   m_Layer: 5
-  m_Name: Dropdown Value Type
+  m_Name: Dropdown Comparison Type
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23153,7 +23153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1291942235}
   m_Layer: 5
-  m_Name: Comparison
+  m_Name: Comparison Year
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27859,7 +27859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f3eb76260fd7f8d48bc738c142913abb, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -28823,7 +28823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f3eb76260fd7f8d48bc738c142913abb, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -29337,7 +29337,7 @@ GameObject:
   - component: {fileID: 1555900645}
   - component: {fileID: 1555900644}
   m_Layer: 5
-  m_Name: Dropdown Time Period
+  m_Name: Dropdown History Time Period
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31718,7 +31718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f3eb76260fd7f8d48bc738c142913abb, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -39555,7 +39555,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2085864347}
   m_Layer: 5
-  m_Name: Comparison
+  m_Name: Comparison Day
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40352,7 +40352,7 @@ GameObject:
   - component: {fileID: 2109540179}
   - component: {fileID: 2109540178}
   m_Layer: 5
-  m_Name: Dropdown Value Type
+  m_Name: Dropdown History Type
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40624,11 +40624,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f4018184ca60a046ad12f9260f6d457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textName: {fileID: 827197307}
   buttonGoBack: {fileID: 2006174447}
   buttonRecolorHabit: {fileID: 485083532}
   buttonDeleteHabit: {fileID: 887335307}
+  textName: {fileID: 827197307}
+  textStreak: {fileID: 1452110267}
+  textTotalCompletions: {fileID: 1888726989}
+  textTotalValue: {fileID: 1525668388}
   scrollRectPages: {fileID: 870234288}
+  dropdownComparisonType: {fileID: 1259090960}
+  comparisonStreak: {fileID: 20382094}
+  comparisonDay: {fileID: 2085864347}
+  comparisonWeek: {fileID: 938711216}
+  comparisonMonth: {fileID: 706669332}
+  comparisonYear: {fileID: 1291942235}
+  dropdownHistoryType: {fileID: 2109540178}
   buttonMonth: {fileID: 0}
   buttonYear: {fileID: 0}
   dropDownValue: {fileID: 0}

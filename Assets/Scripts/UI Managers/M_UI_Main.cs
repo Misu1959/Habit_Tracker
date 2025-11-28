@@ -113,7 +113,7 @@ public class M_UI_Main : MonoBehaviour
     {
         for (int i = 0; i < 7; i++)
         {
-            DateTime dayOfWeek = M_Date.singleton.startOfWeek.AddDays(i);
+            DateTime dayOfWeek = M_Date.singleton.startOfCurrentWeek.AddDays(i);
             weekDays.GetChild(i).GetComponent<TextMeshProUGUI>().text = dayOfWeek.ToString("ddd") + "\n" + dayOfWeek.ToString("dd");
 
             if(dayOfWeek == M_Date.singleton.today)

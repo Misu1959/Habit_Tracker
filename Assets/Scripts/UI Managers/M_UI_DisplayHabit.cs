@@ -3,25 +3,36 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class M_UI_DisplayHabit : MonoBehaviour
 {
+    private enum StatusType
+    {
+        Completion,
+        Value
+    }
+
 
     public static M_UI_DisplayHabit singleton;
 
     private Habit habitToDisplay;
 
 
-    [Header("In scene objects")]
-    [SerializeField] private TextMeshProUGUI textName;
-
+    [Header("Intro Panel")]
     [SerializeField] private Button buttonGoBack;
     [SerializeField] private Button buttonRecolorHabit;
     [SerializeField] private Button buttonDeleteHabit;
 
+    [SerializeField] private TextMeshProUGUI textName;
+    [SerializeField] private TextMeshProUGUI textStreak;
+    [SerializeField] private TextMeshProUGUI textTotalCompletions;
+    [SerializeField] private TextMeshProUGUI textTotalValue;
+
+
 
     [SerializeField] private ScrollRect scrollRectPages;
-    
+
     public Habit GetDisplayHabit() => habitToDisplay;
     public void SetHabitToDisplay(Habit newHabitToDisplay)
     {
@@ -47,6 +58,8 @@ public class M_UI_DisplayHabit : MonoBehaviour
         SetButtonGoBack();
         SetButtonRecolorHabit();
         SetButtonDeleteHabit();
+
+        SetDropdownComparisonType();
     }
 
 
@@ -56,7 +69,7 @@ public class M_UI_DisplayHabit : MonoBehaviour
     private void SetButtonGoBack()
     {
         buttonGoBack.onClick.AddListener(M_UI_Main.singleton.CloseDisplayHabitMenu);
-        buttonGoBack.onClick.AddListener(SetScrollRectPosition);
+        buttonGoBack.onClick.AddListener(() => scrollRectPages.horizontalNormalizedPosition = 0);
     }
 
     private void SetButtonRecolorHabit()
@@ -83,12 +96,48 @@ public class M_UI_DisplayHabit : MonoBehaviour
         M_UI_ColorPicker.singleton.ChangeSelectedColor(habitToDisplay.data.color);
 
         DisplayHabitName();
+        DisplayHabitInfo();
+
+        DisplayTypeDropdowns();
+
+
+        DisplayComparisonPage(StatusType.Completion);
+        DisplayHistoryPage();
+        DisplayCalendarPage();
+
+        dropdownComparisonType.value = 0;
     }
 
     private void DisplayHabitName() => textName.text = habitToDisplay.data.name;
 
+    private void DisplayHabitInfo()
+    {
+        M_SaveLoad.LoadHabitStatsTotal(habitToDisplay.data.name, out int totalCompletions, out float totalValue);
+        M_SaveLoad.LoadHabitStreak(habitToDisplay.data.name, out DateTime startDate, out DateTime endDate, out int streakCompletion, out float streakValue);
 
-    private void SetScrollRectPosition() => scrollRectPages.horizontalNormalizedPosition = 0;
+        
+        textStreak.text = "0";
+        textTotalCompletions.text = totalCompletions.ToString();
+        textTotalValue.text = totalValue.ToString();
+
+    }
+
+
+    private void DisplayTypeDropdowns()
+    {
+        if(habitToDisplay.data.type == HabitType.yesOrNo)
+        {
+            dropdownComparisonType.gameObject.SetActive(false);
+            dropdownHistoryType.gameObject.SetActive(false);
+        }
+        else
+        {
+            dropdownComparisonType.gameObject.SetActive(true);
+            dropdownHistoryType.gameObject.SetActive(true);
+        }
+    }
+
+
 
     #endregion
 
@@ -96,23 +145,151 @@ public class M_UI_DisplayHabit : MonoBehaviour
 
     #region Stats Comparison 
 
+    [Header("\tComparison page")]
+    [SerializeField]  private TMP_Dropdown dropdownComparisonType;
+    
+    [SerializeField] private Transform comparisonStreak;
+    [SerializeField] private Transform comparisonDay;
+    [SerializeField] private Transform comparisonWeek;
+    [SerializeField] private Transform comparisonMonth;
+    [SerializeField] private Transform comparisonYear;
+
+
+    private void SetDropdownComparisonType()
+        => dropdownComparisonType.onValueChanged.AddListener((int option) => DisplayComparisonPage((StatusType)option));
+
+
+    private void DisplayComparisonPage(StatusType statusType)
+    {
+        DisplayComparisonStreak(statusType);
+        DisplayComparisonDay(statusType);
+        DisplayComparisonWeek(statusType);
+        DisplayComparisonMonth(statusType);
+        DisplayComparisonYear(statusType);
+    }
+
+    private void DisplayComparisonStreak(StatusType statusType)
+    {
+        M_SaveLoad.LoadHabitStreak(habitToDisplay.data.name, out DateTime streakStartDate, out DateTime streakEndDate, out int streakCompletions, out float streakValue);
+        M_SaveLoad.LoadHabitBestStreak(habitToDisplay.data.name, out DateTime bestStreakStartDate, out DateTime bestStreakEndDate, out int bestStreakCompletions, out float bestStreakValue);
+
+        if (statusType == StatusType.Completion)
+        {
+            DisplayStats(comparisonStreak.GetChild(0), streakStartDate, streakEndDate, streakCompletions, bestStreakCompletions, M_Date.DAY_FORMAT);
+            DisplayStats(comparisonStreak.GetChild(1), bestStreakStartDate, bestStreakEndDate, bestStreakCompletions, bestStreakCompletions, M_Date.DAY_FORMAT);
+        }
+        else
+        {
+            DisplayStats(comparisonStreak.GetChild(0), streakStartDate, streakEndDate, streakValue, bestStreakValue, M_Date.DAY_FORMAT);
+            DisplayStats(comparisonStreak.GetChild(1), bestStreakStartDate, bestStreakEndDate, bestStreakValue, bestStreakValue, M_Date.DAY_FORMAT);
+        }
+    }
+    private void DisplayComparisonDay(StatusType statusType)
+    {
+        M_SaveLoad.LoadHabitDay(habitToDisplay.data.name, M_Date.singleton.today, out int dayCompletion, out float dayValue);
+        M_SaveLoad.LoadHabitBestDay(habitToDisplay.data.name, out DateTime bestDay, out int bestDayCompletion, out float bestDayValue);
+
+        if (statusType == StatusType.Completion)
+        {
+            DisplayStats(comparisonDay.GetChild(0), M_Date.singleton.today, M_Date.singleton.today.AddDays(1), dayCompletion, bestDayCompletion, M_Date.DAY_FORMAT);
+            DisplayStats(comparisonDay.GetChild(1), bestDay, bestDay.AddDays(1), bestDayCompletion, bestDayCompletion, M_Date.DAY_FORMAT);
+        }
+        else
+        {
+            DisplayStats(comparisonDay.GetChild(0), M_Date.singleton.today, M_Date.singleton.today.AddDays(1), dayValue, bestDayValue, M_Date.DAY_FORMAT);
+            DisplayStats(comparisonDay.GetChild(1), bestDay, bestDay.AddDays(1), bestDayValue, bestDayValue, M_Date.DAY_FORMAT);
+        }
+    }
+    private void DisplayComparisonWeek(StatusType statusType)
+    {
+        M_SaveLoad.LoadHabitWeek(habitToDisplay.data.name, M_Date.singleton.today, out int weekCompletions, out float weekValue);
+        M_SaveLoad.LoadHabitBestWeek(habitToDisplay.data.name, out DateTime bestWeekStartDate, out int bestWeekCompletions, out float bestWeekValue);
+
+        if (statusType == StatusType.Completion)
+        {
+            DisplayStats(comparisonWeek.GetChild(0), M_Date.singleton.startOfCurrentWeek, M_Date.singleton.startOfCurrentWeek.AddDays(7), weekCompletions, bestWeekCompletions, M_Date.DAY_FORMAT);
+            DisplayStats(comparisonWeek.GetChild(1), bestWeekStartDate, bestWeekStartDate.AddDays(7), bestWeekCompletions, bestWeekCompletions, M_Date.DAY_FORMAT);
+        }
+        else
+        {
+            DisplayStats(comparisonWeek.GetChild(0), M_Date.singleton.startOfCurrentWeek, M_Date.singleton.startOfCurrentWeek.AddDays(7), weekValue, bestWeekValue, M_Date.DAY_FORMAT);
+            DisplayStats(comparisonWeek.GetChild(1), bestWeekStartDate, bestWeekStartDate.AddDays(7), bestWeekValue, bestWeekValue, M_Date.DAY_FORMAT);
+        }
+    }
+    private void DisplayComparisonMonth(StatusType statusType)
+    {
+        M_SaveLoad.LoadHabitMonth(habitToDisplay.data.name, M_Date.singleton.today, out int monthCompletions, out float monthValue);
+        M_SaveLoad.LoadHabitBestMonth(habitToDisplay.data.name, out DateTime bestMonthStartDate, out int bestMonthCompletions, out float bestMonthValue);
+
+        if (statusType == StatusType.Completion)
+        {
+            DisplayStats(comparisonMonth.GetChild(0), M_Date.singleton.startOfCurrentMonth, M_Date.singleton.startOfCurrentMonth.AddMonths(1), monthCompletions, bestMonthCompletions, M_Date.MONTH_FORMAT);
+            DisplayStats(comparisonMonth.GetChild(1), bestMonthStartDate, bestMonthStartDate.AddMonths(1), bestMonthCompletions, bestMonthCompletions, M_Date.MONTH_FORMAT);
+        }
+        else
+        {
+            DisplayStats(comparisonMonth.GetChild(0), M_Date.singleton.startOfCurrentMonth, M_Date.singleton.startOfCurrentMonth.AddMonths(1), monthValue, bestMonthValue, M_Date.MONTH_FORMAT);
+            DisplayStats(comparisonMonth.GetChild(1), bestMonthStartDate, bestMonthStartDate.AddMonths(1), bestMonthValue, bestMonthValue, M_Date.MONTH_FORMAT);
+        }
+    
+    }
+
+    private void DisplayComparisonYear(StatusType statusType)
+    {
+        M_SaveLoad.LoadHabitYear(habitToDisplay.data.name, M_Date.singleton.today, out int yearCompletions, out float yearValue);
+        M_SaveLoad.LoadHabitBestYear(habitToDisplay.data.name, out DateTime bestYearStartDate, out int bestYearCompletions, out float bestYearValue);
+
+        if (statusType == StatusType.Completion)
+        {
+            DisplayStats(comparisonYear.GetChild(0), M_Date.singleton.startOfCurrentYear, M_Date.singleton.startOfCurrentYear.AddYears(1), yearCompletions, bestYearCompletions, M_Date.YEAR_FORMAT);
+            DisplayStats(comparisonYear.GetChild(1), bestYearStartDate, bestYearStartDate.AddYears(1), bestYearCompletions, bestYearCompletions, M_Date.YEAR_FORMAT);
+        }
+        else
+        {
+            DisplayStats(comparisonYear.GetChild(0), M_Date.singleton.startOfCurrentYear, M_Date.singleton.startOfCurrentYear.AddYears(1), yearValue, bestYearValue, M_Date.YEAR_FORMAT);
+            DisplayStats(comparisonYear.GetChild(1), bestYearStartDate, bestYearStartDate.AddYears(1), bestYearValue, bestYearValue, M_Date.YEAR_FORMAT);
+        }
+    }
+
+
+
+    private void DisplayStats(Transform stats, DateTime startDate, DateTime endDate, float status,float bestStatus, string dateFormat)
+    {
+        stats.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = (bestStatus == 0) ? 1 : status / bestStatus;
+        stats.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = status.ToString();
+
+        stats.GetChild(1).GetComponent<TextMeshProUGUI>().text = startDate.ToString(dateFormat);
+        stats.GetChild(2).GetComponent<TextMeshProUGUI>().text = endDate.ToString(dateFormat);
+    }
 
     #endregion
 
 
     #region History
+    [Header("\tComparison page")]
+    [SerializeField] private TMP_Dropdown dropdownHistoryType;
 
+
+    private void DisplayHistoryPage()
+    {
+
+    }
 
     #endregion
 
 
     #region Calendar
 
-    [Header("Calendar")]
+    [Header("\tCalendar")]
     [SerializeField] private Button buttonMonth;
     [SerializeField] private Button buttonYear;
     [SerializeField] private Dropdown dropDownValue;
 
+
+    private void DisplayCalendarPage()
+    {
+
+    }
 
     #endregion
 
