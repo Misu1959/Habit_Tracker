@@ -78,7 +78,7 @@ public class M_UI_CreateHabit : MonoBehaviour
     private void SetButtonCreateHabit()
     {
         buttonCreateHabit.onClick.AddListener(M_UI_Main.singleton.CloseCreateHabitMenu);
-        buttonCreateHabit.onClick.AddListener(() => M_Habits.singleton.CreateHabit(new HabitData(habitType, habitColor, habitName, habitQuestion, habitUnit, habitAmount), false));
+        buttonCreateHabit.onClick.AddListener(() => M_Habits.singleton.CreateHabit(new HabitData(M_Date.singleton.today, habitType, habitColor, habitName, habitQuestion, habitUnit, habitAmount), false));
     }
 
 
@@ -88,7 +88,7 @@ public class M_UI_CreateHabit : MonoBehaviour
     {
         GameObject unitAmount_Group = inputHabitUnit.transform.parent.gameObject;
 
-        toggleHabitType.onValueChanged.AddListener((val) => toggleHabitType.GetComponent<Image>().sprite = !val ? toggleOff : toggleOn);
+        toggleHabitType.onValueChanged.AddListener((val) => toggleHabitType.transform.GetChild(0).GetComponent<Image>().sprite = !val ? toggleOff : toggleOn);
 
         toggleHabitType.onValueChanged.AddListener((val) => unitAmount_Group.SetActive(val));
         toggleHabitType.onValueChanged.AddListener((val) => CheckAllMandatoryInputs());

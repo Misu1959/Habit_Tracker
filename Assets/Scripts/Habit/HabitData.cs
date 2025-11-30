@@ -14,6 +14,8 @@ public enum HabitType
 
 public class HabitData
 {
+    public DateTime creationDate {  get; private set; }
+
     public HabitType type { get; private set; }
     public Color color { get; private set; }
 
@@ -27,8 +29,10 @@ public class HabitData
 
     public float completionValue {  get; private set; }
 
-    public HabitData(HabitType _type, Color _color, string _name, string _question, string _unit, float _targetAmount)
+    public HabitData(DateTime _creationDate, HabitType _type, Color _color, string _name, string _question, string _unit, float _targetAmount)
     {
+        creationDate = _creationDate;
+        
         type        = _type;
         color       = _color;
         name        = _name;

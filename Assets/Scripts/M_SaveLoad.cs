@@ -127,7 +127,7 @@ public class M_SaveLoad : MonoBehaviour
         SaveHabitUnit(data.name, data.unit);
         SaveHabitTarget(data.name, data.targetAmount);
 
-        SaveHabitCreationDate(data.name, DateTime.Today);
+        SaveHabitCreationDate(data.name, data.creationDate);
 
     }
 
@@ -395,6 +395,7 @@ public class M_SaveLoad : MonoBehaviour
     {
         string habitName = LoadHabitName(key);
 
+        DateTime creationDate = LoadHabitCreationDate(habitName);
 
         HabitType type = LoadHabitType(habitName);
         Color32 color = LoadHabitColor(habitName);
@@ -406,7 +407,7 @@ public class M_SaveLoad : MonoBehaviour
         float target = LoadHabitTarget(habitName);
 
 
-        return new HabitData(type, color, habitName, question, unit, target);
+        return new HabitData(creationDate,type, color, habitName, question, unit, target);
     }
 
 
@@ -438,7 +439,7 @@ public class M_SaveLoad : MonoBehaviour
         => PlayerPrefs.GetFloat(HABIT + name + TARGET);
 
 
-    public static DateTime LoadHabitCreationDate(string name)
+    private static DateTime LoadHabitCreationDate(string name)
         => DateTime.Parse(PlayerPrefs.GetString(HABIT + name + CREATION_DATE), CultureInfo.InvariantCulture);
 
 
