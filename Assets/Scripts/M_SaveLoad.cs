@@ -22,6 +22,7 @@ public class M_SaveLoad : MonoBehaviour
     private const string QUESTION = "question";
     private const string UNIT = "unit";
     private const string TARGET = "target";
+    private const string NOTE = "note";
 
 
     private const string CREATION_DATE = "creation";
@@ -163,7 +164,7 @@ public class M_SaveLoad : MonoBehaviour
     public static void UpdateHabitColor(string name, Color newColor)
         => SaveHabitColor(name, newColor);
 
-    public static void UpdateHabit(string name, DateTime date, float amount)
+    public static void UpdateHabit(string name, DateTime date, float amount, string note)
     {
 
         SaveHabitDay(name, date, amount);
@@ -173,9 +174,13 @@ public class M_SaveLoad : MonoBehaviour
         SaveHabitStreak(name, date);
 
         SaveHabitStatsTotal(name, date);
+
+        SaveHabitNote(name, date, note);
     }
 
 
+    private static void SaveHabitNote(string name, DateTime date, string note)
+        => PlayerPrefs.SetString(HABIT + name + DAY + date.ToString() + NOTE, note);
 
     private static void SaveHabitDay(string name, DateTime date, float value)
     {
@@ -376,9 +381,6 @@ public class M_SaveLoad : MonoBehaviour
 
         PlayerPrefs.SetInt(HABIT + name + TOTAL + COMPLETIONS, totalCompletions + dayCompletion);
         PlayerPrefs.SetFloat(HABIT + name + TOTAL + VALUE, totalValue + dayValue);
-
-
-        Debug.Log("Saved "+name+" " + PlayerPrefs.GetInt(HABIT + name + TOTAL + COMPLETIONS));
     }
 
     #endregion
@@ -436,13 +438,14 @@ public class M_SaveLoad : MonoBehaviour
         => PlayerPrefs.GetFloat(HABIT + name + TARGET);
 
 
-    private static DateTime LoadHabitCreationDate(string name)
+    public static DateTime LoadHabitCreationDate(string name)
         => DateTime.Parse(PlayerPrefs.GetString(HABIT + name + CREATION_DATE), CultureInfo.InvariantCulture);
 
 
 
 
-
+    public static string LoadHabitNote(string name, DateTime date)
+        => PlayerPrefs.GetString(HABIT + name + DAY + date.ToString() + NOTE);
 
     public static void LoadHabitDay(string name, DateTime date, out int completions, out float value)
     {
@@ -607,6 +610,8 @@ public class M_SaveLoad : MonoBehaviour
         {
             PlayerPrefs.DeleteKey(HABIT + name + DAY + day.ToString() + COMPLETIONS);
             PlayerPrefs.DeleteKey(HABIT + name + DAY + day.ToString() + VALUE);
+
+            PlayerPrefs.DeleteKey(HABIT + name + DAY + day.ToString() + NOTE);
         }
     }
     public static void DeleteHabitWeeks(string name)

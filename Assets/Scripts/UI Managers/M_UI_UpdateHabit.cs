@@ -29,6 +29,7 @@ public class M_UI_UpdateHabit : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI textName;
     [SerializeField] private TextMeshProUGUI textQuestion;
+    [SerializeField] private TextMeshProUGUI textNote;
 
     [SerializeField] private TextMeshProUGUI textTarget;
 
@@ -99,7 +100,7 @@ public class M_UI_UpdateHabit : MonoBehaviour
         else
             newValue = float.Parse(inputFieldUpdate.text);
 
-        M_SaveLoad.UpdateHabit(habitToUpdate.data.name, updateDay, newValue);
+        M_SaveLoad.UpdateHabit(habitToUpdate.data.name, updateDay, newValue, textNote.text);
         habitToUpdate.UpdateData(newValue);
     }
 }

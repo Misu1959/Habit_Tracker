@@ -43,7 +43,12 @@ public class M_UI_ColorPicker : MonoBehaviour
     private void AddRecolorAction()
     {
         if (!M_UI_Main.singleton.panelDisplayHabit.gameObject.activeInHierarchy)
+        {
+            M_UI_Main.singleton.panelCreateHabit.GetComponent<PageColorizer>().Colorize(imageHabitColor.color);
             return;
+        }
+
+        M_UI_Main.singleton.panelDisplayHabit.GetComponent<PageColorizer>().Colorize(imageHabitColor.color);
 
         M_UI_DisplayHabit.singleton.GetDisplayHabit().Recolor(imageHabitColor.color);
     }

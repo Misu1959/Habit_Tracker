@@ -121,6 +121,8 @@ public class M_UI_CreateHabit : MonoBehaviour
 
 
         M_UI_ColorPicker.singleton.ChangeSelectedColor(0);
+        M_UI_Main.singleton.panelCreateHabit.GetComponent<PageColorizer>().Colorize(habitColor);
+
 
         CheckAllMandatoryInputs();
     }
@@ -129,27 +131,51 @@ public class M_UI_CreateHabit : MonoBehaviour
     {
         bool allMandatoryInputsMet = true;
 
+        inputHabitName.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "";
+        inputHabitUnit.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "";
+        inputHabitAmount.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "";
+
 
         if (inputHabitName.text.Length == 0)
+        {
             allMandatoryInputsMet = false;
 
+            inputHabitName.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Mandatory field!";
+        }
+
+        if(!CheckForNameDuplicate())
+        {
+            allMandatoryInputsMet = false;
+            inputHabitName.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Name already used!";
+        }
 
         if (toggleHabitType.isOn)
         {
-            if (inputHabitUnit.text.Length == 0 || inputHabitAmount.text.Length == 0)
+            if (inputHabitUnit.text.Length == 0)
+            {
                 allMandatoryInputsMet = false;
+                inputHabitUnit.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Mandatory field!";
+            }
 
-            if (float.TryParse(inputHabitAmount.text, out float value) && value == 0)
+            if (inputHabitAmount.text == "" || float.TryParse(inputHabitAmount.text, out float value) && value == 0)
+            {
                 allMandatoryInputsMet = false;
+                inputHabitAmount.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Mandatory field!";
+            }
         }
-        Color createHabitButtonColor = allMandatoryInputsMet ? Color.white : Color.gray;
 
         buttonCreateHabit.interactable = allMandatoryInputsMet;
-
-
-        buttonCreateHabit.GetComponent<Image>().color = createHabitButtonColor;
-        buttonCreateHabit.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = createHabitButtonColor;
     }
+
+    private bool CheckForNameDuplicate()
+    {
+        foreach (Habit habit in M_Habits.singleton.habitList)
+            if (habit.data.name == inputHabitName.text)
+                return false;
+
+        return true;
+    }
+
 
     #endregion
 }

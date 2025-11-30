@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using System;
+using Unity.Mathematics;
 
 public class M_UI_DisplayHabit : MonoBehaviour
 {
@@ -59,7 +60,9 @@ public class M_UI_DisplayHabit : MonoBehaviour
         SetButtonRecolorHabit();
         SetButtonDeleteHabit();
 
-        SetDropdownComparisonType();
+        SetComparisonPage();
+        SetHistoryPage();
+        SetCalendarPage();
     }
 
 
@@ -94,6 +97,12 @@ public class M_UI_DisplayHabit : MonoBehaviour
     private void RefreshDisplayData()
     {
         M_UI_ColorPicker.singleton.ChangeSelectedColor(habitToDisplay.data.color);
+        M_UI_Main.singleton.panelDisplayHabit.GetComponent<PageColorizer>().Colorize(habitToDisplay.data.color);
+
+        dropdownComparisonType.value = 0;
+        calendarDate = DateTime.Today;
+
+
 
         DisplayHabitName();
         DisplayHabitInfo();
@@ -105,7 +114,7 @@ public class M_UI_DisplayHabit : MonoBehaviour
         DisplayHistoryPage();
         DisplayCalendarPage();
 
-        dropdownComparisonType.value = 0;
+
     }
 
     private void DisplayHabitName() => textName.text = habitToDisplay.data.name;
@@ -129,11 +138,15 @@ public class M_UI_DisplayHabit : MonoBehaviour
         {
             dropdownComparisonType.gameObject.SetActive(false);
             dropdownHistoryType.gameObject.SetActive(false);
+
+            textTotalValue.transform.parent.gameObject.SetActive(false);
         }
         else
         {
             dropdownComparisonType.gameObject.SetActive(true);
             dropdownHistoryType.gameObject.SetActive(true);
+
+            textTotalValue.transform.parent.gameObject.SetActive(true);
         }
     }
 
@@ -154,6 +167,11 @@ public class M_UI_DisplayHabit : MonoBehaviour
     [SerializeField] private Transform comparisonMonth;
     [SerializeField] private Transform comparisonYear;
 
+
+    private void SetComparisonPage()
+    {
+        SetDropdownComparisonType();
+    }
 
     private void SetDropdownComparisonType()
         => dropdownComparisonType.onValueChanged.AddListener((int option) => DisplayComparisonPage((StatusType)option));
@@ -253,9 +271,9 @@ public class M_UI_DisplayHabit : MonoBehaviour
 
 
 
-    private void DisplayStats(Transform stats, DateTime startDate, DateTime endDate, float status,float bestStatus, string dateFormat)
+    private void DisplayStats(Transform stats, DateTime startDate, DateTime endDate, float status,float maxStatus, string dateFormat)
     {
-        stats.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = (bestStatus == 0) ? 1 : status / bestStatus;
+        stats.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = (maxStatus == 0) ? 1 : status / maxStatus;
         stats.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = status.ToString();
 
         stats.GetChild(1).GetComponent<TextMeshProUGUI>().text = startDate.ToString(dateFormat);
@@ -269,6 +287,9 @@ public class M_UI_DisplayHabit : MonoBehaviour
     [Header("\tComparison page")]
     [SerializeField] private TMP_Dropdown dropdownHistoryType;
 
+    private void SetHistoryPage()
+    {
+    }
 
     private void DisplayHistoryPage()
     {
@@ -280,16 +301,75 @@ public class M_UI_DisplayHabit : MonoBehaviour
 
     #region Calendar
 
+    private DateTime calendarDate = new DateTime();
+
     [Header("\tCalendar")]
-    [SerializeField] private Button buttonMonth;
-    [SerializeField] private Button buttonYear;
-    [SerializeField] private Dropdown dropDownValue;
+    [SerializeField] private TMP_Dropdown dropdownCalendarMonth;
+    [SerializeField] private TMP_Dropdown dropdownCalendarYear;
+    [SerializeField] private Button buttonPrevMonth;
+    [SerializeField] private Button buttonNextMonth;
+
+
+    private void SetCalendarPage()
+    {
+        SetDropdownMonth();
+        SetDropdownYear();
+        SetButtonPrevMonth();
+        SetButtonNextMonth();
+    }
+
+    private void SetDropdownMonth()
+        => dropdownCalendarMonth.onValueChanged.AddListener((int month) => ChangeMonth(month + 1));
+    private void SetDropdownYear()
+        => dropdownCalendarYear.onValueChanged.AddListener((int year) => ChangeYear(year));
+    private void SetButtonPrevMonth()
+        => buttonPrevMonth.onClick.AddListener(() => ChangeMonth(calendarDate.Month - 1));
+    private void SetButtonNextMonth()
+        => buttonNextMonth.onClick.AddListener(() => ChangeMonth(calendarDate.Month + 1));
+
+
+    private void ChangeMonth(int newMonth)
+    {
+        calendarDate = new DateTime(calendarDate.Year, newMonth, calendarDate.Day);
+        DisplayCalendarPage();
+    }
+
+    private void ChangeYear(int newYear)
+    {
+        calendarDate = new DateTime(newYear, calendarDate.Month, calendarDate.Day);
+        DisplayCalendarPage();
+    }
 
 
     private void DisplayCalendarPage()
     {
-
+        DisplayCalendarDropdowns();
+        DisplayCalendarButtons();
     }
+
+    private void DisplayCalendarDropdowns()
+    {
+        dropdownCalendarMonth.value = calendarDate.Month  - 1;
+        //dropdownCalendarYear.value = calendarDate.Year;
+    }
+    
+
+    private void DisplayCalendarButtons()
+    {
+        DateTime creationDate = M_SaveLoad.LoadHabitCreationDate(habitToDisplay.data.name);
+
+        if(calendarDate.Month > creationDate.Month && calendarDate.Year >= creationDate.Year)
+            buttonPrevMonth.gameObject.SetActive(true);
+        else
+            buttonPrevMonth.gameObject.SetActive(false);
+
+        if (calendarDate.Month < creationDate.Month && calendarDate.Year <= creationDate.Year)
+            buttonNextMonth.gameObject.SetActive(true);
+        else
+            buttonNextMonth.gameObject.SetActive(false);
+    }
+
+
 
     #endregion
 
