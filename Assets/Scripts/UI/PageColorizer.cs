@@ -18,6 +18,7 @@ public class PageColorizer : MonoBehaviour
     {
         foreach(MultiGraphics obj in objectToColorize)
             obj.ChangeColor(newColor);
+
     }
 
 }

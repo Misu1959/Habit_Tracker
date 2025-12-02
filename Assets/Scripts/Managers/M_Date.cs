@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class M_Date : MonoBehaviour
 {
-    public static string DAY_FORMAT = "dd MM yyyy";
+    public static string DAY_FORMAT = "%d MMM yyyy";
     public static string MONTH_FORMAT = "MMM yyyy";
     public static string YEAR_FORMAT = "yyyy";
 

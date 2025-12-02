@@ -14,8 +14,9 @@ public class M_UI_Main : MonoBehaviour
     [SerializeField] private Button buttonOpenSorHabitsMenu;
 
 
+    [SerializeField] private Transform monthYear;
     [SerializeField] private Transform weekDays;
-    [SerializeField] private Transform displayToday;
+    [SerializeField] private RectTransform displayToday;
 
     [field:SerializeField] public Transform panelHabits { get; private set; }
 
@@ -39,7 +40,7 @@ public class M_UI_Main : MonoBehaviour
     void Start()
     {
         Setup();
-        DisplayDaysOfWeek();
+        DisplayDate();
 
 
     }
@@ -109,8 +110,10 @@ public class M_UI_Main : MonoBehaviour
 
 
 
-    private void DisplayDaysOfWeek()
+    private void DisplayDate()
     {
+        monthYear.GetComponent<TextMeshProUGUI>().text = M_Date.singleton.today.ToString("MMMM") + "\n" + M_Date.singleton.today.ToString("yyyy");
+
         for (int i = 0; i < 7; i++)
         {
             DateTime dayOfWeek = M_Date.singleton.startOfCurrentWeek.AddDays(i);
@@ -119,7 +122,7 @@ public class M_UI_Main : MonoBehaviour
             if(dayOfWeek == M_Date.singleton.today)
             {
                 displayToday.SetParent(weekDays.GetChild(i));
-                displayToday.localPosition = Vector3.zero;
+                displayToday.localPosition = Vector2.zero;
             }
         }
     }

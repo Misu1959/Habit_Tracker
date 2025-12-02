@@ -236,10 +236,10 @@ public class M_UI_SortHabits : MonoBehaviour
 
     private int CompareBrightness(Habit habit1, Habit habit2,bool reverse)
     {
-        float brightness1 = 0.2126f * habit1.data.color.r + 0.7152f * habit1.data.color.g + 0.0722f * habit1.data.color.b;
-        float brightness2 = 0.2126f * habit2.data.color.r + 0.7152f * habit2.data.color.g + 0.0722f * habit2.data.color.b;
+        float color1Index = M_UI_ColorPicker.singleton.GetColorIndex(habit1.data.color);
+        float color2Index = M_UI_ColorPicker.singleton.GetColorIndex(habit2.data.color);
 
-        int valueComparison =  brightness2.CompareTo(brightness1);
+        int valueComparison =  color2Index.CompareTo(color1Index);
 
         if (valueComparison == 0)
         {

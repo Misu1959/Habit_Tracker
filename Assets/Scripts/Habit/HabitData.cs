@@ -27,28 +27,24 @@ public class HabitData
     public float currentAmount { get; private set; }
 
 
-    public float completionValue {  get; private set; }
+    public float completionValue => (targetAmount == 0) ? 1 : currentAmount / targetAmount;
 
     public HabitData(DateTime _creationDate, HabitType _type, Color _color, string _name, string _question, string _unit, float _targetAmount)
     {
         creationDate = _creationDate;
         
-        type        = _type;
-        color       = _color;
-        name        = _name;
-        question    = _question;
-        unit        = _unit;
-        targetAmount= _targetAmount;
+        type         = _type;
+        color        = _color;
+        name         = _name;
+        question     = _question;
+        unit         = _unit;
+        targetAmount = _targetAmount;
 
-        currentAmount = 0;
-
-        completionValue = currentAmount / targetAmount;
+        M_SaveLoad.LoadHabitDay(name,M_Date.singleton.today,out int completion,out float value);
+    
+        currentAmount = value;
     }
 
-    public void Update(float newAmount)
-    {
-        currentAmount = newAmount;
-        completionValue = currentAmount / targetAmount;
-    }
+    public void Update(float newAmount) =>  currentAmount = newAmount;
     public void UpdateColor(Color newColor) => color = newColor;
 }

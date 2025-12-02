@@ -52,14 +52,12 @@ public class M_Habits : MonoBehaviour
         habitList.Add(habit);
 
 
-        M_SaveLoad.LoadHabitDay(newData.name, M_Date.singleton.today, out int completion, out float value);
-        habit.UpdateData(value);
-
-
         if (!loadHabit)
         {
             M_SaveLoad.SaveNrOfHabits();
             M_SaveLoad.SaveHabitData(habit);
+
+            M_UI_SortHabits.singleton.Sort();
         }
     }
 

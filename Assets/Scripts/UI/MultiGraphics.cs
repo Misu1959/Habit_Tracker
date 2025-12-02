@@ -25,7 +25,7 @@ public class MultiGraphics : MonoBehaviour
 
         foreach (var graphic in staticGraphicsTransparent)
             if (graphic != null)
-                graphic.color = new Color32(newColor.r, newColor.g, newColor.b, 32);
+                graphic.color = new Color32(newColor.r, newColor.g, newColor.b, 64);
     }
 
 }

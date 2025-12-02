@@ -185,22 +185,18 @@ public class M_SaveLoad : MonoBehaviour
     private static void SaveHabitDay(string name, DateTime date, float value)
     {
         if (PlayerPrefs.GetString(HABIT + name + DAY + DATE) != M_Date.singleton.today.ToString())
-        {
-            SaveHabitBestDay(name, DateTime.Parse(PlayerPrefs.GetString(HABIT + name + DAY + DATE, M_Date.singleton.today.ToString()), CultureInfo.InvariantCulture)); // Check if yesterday is best day
             PlayerPrefs.SetString(HABIT + name + DAY + DATE, M_Date.singleton.today.ToString());
-        }
 
         PlayerPrefs.SetInt(HABIT + name + DAY + date.ToString() + COMPLETIONS, value < LoadHabitTarget(name) ? 0 : 1);
         PlayerPrefs.SetFloat(HABIT + name + DAY + date.ToString() + VALUE, value);
+
+        SaveHabitBestDay(name, DateTime.Parse(PlayerPrefs.GetString(HABIT + name + DAY + DATE, M_Date.singleton.today.ToString()), CultureInfo.InvariantCulture)); // Check if yesterday is best day
     }
     private static void SaveHabitWeek(string name, DateTime date)
     {
-        if(PlayerPrefs.GetString(HABIT + name + WEEK + DATE) != M_Date.singleton.StartOfWeek(date).ToString())
+        if(PlayerPrefs.GetString(HABIT + name + WEEK + DATE) != M_Date.singleton.startOfCurrentWeek.ToString())
         {
-            SaveHabitBestWeek(name, DateTime.Parse(PlayerPrefs.GetString(HABIT + name + WEEK + DATE, M_Date.singleton.startOfCurrentWeek.ToString()), CultureInfo.InvariantCulture)); // Check if last week is best week
-
-
-            PlayerPrefs.SetString(HABIT + name + WEEK + DATE, M_Date.singleton.StartOfWeek(date).ToString());
+            PlayerPrefs.SetString(HABIT + name + WEEK + DATE, M_Date.singleton.startOfCurrentWeek.ToString());
 
             PlayerPrefs.SetInt(HABIT + name + WEEK + COMPLETIONS, 0);
             PlayerPrefs.SetFloat(HABIT + name + WEEK + VALUE, 0);
@@ -211,18 +207,17 @@ public class M_SaveLoad : MonoBehaviour
         int weekCompletions = PlayerPrefs.GetInt(HABIT + name + WEEK + COMPLETIONS);
         float weekValue     = PlayerPrefs.GetFloat(HABIT + name + WEEK + VALUE);
 
-
-
         PlayerPrefs.SetInt(HABIT + name + WEEK + M_Date.singleton.StartOfWeek(date).ToString()+ COMPLETIONS,  weekCompletions + dayCompletion);
         PlayerPrefs.SetFloat(HABIT + name + WEEK + M_Date.singleton.StartOfWeek(date).ToString() + VALUE, weekValue + dayValue);
+
+        SaveHabitBestWeek(name, DateTime.Parse(PlayerPrefs.GetString(HABIT + name + WEEK + DATE, M_Date.singleton.startOfCurrentWeek.ToString()), CultureInfo.InvariantCulture)); // Check if last week is best week
     }
     private static void SaveHabitMonth(string name, DateTime date)
     {
-        if (PlayerPrefs.GetString(HABIT + name + MONTH + DATE) != M_Date.singleton.StartOfMonth(date).ToString())
+        if (PlayerPrefs.GetString(HABIT + name + MONTH + DATE) != M_Date.singleton.startOfCurrentMonth.ToString())
         {
-            SaveHabitBestMonth(name, DateTime.Parse(PlayerPrefs.GetString(HABIT + name + MONTH + DATE, M_Date.singleton.startOfCurrentMonth.ToString()), CultureInfo.InvariantCulture)); // Check if last month is best month
 
-            PlayerPrefs.SetString(HABIT + name + MONTH + DATE, M_Date.singleton.StartOfMonth(date).ToString());
+            PlayerPrefs.SetString(HABIT + name + MONTH + DATE, M_Date.singleton.startOfCurrentMonth.ToString());
 
             PlayerPrefs.SetInt(HABIT + name + MONTH + COMPLETIONS, 0);
             PlayerPrefs.SetFloat(HABIT + name + MONTH + VALUE, 0);
@@ -236,14 +231,14 @@ public class M_SaveLoad : MonoBehaviour
 
         PlayerPrefs.SetInt(HABIT + name + MONTH + M_Date.singleton.StartOfMonth(date).ToString() + COMPLETIONS, monthCompletions + dayCompletion);
         PlayerPrefs.SetFloat(HABIT + name + MONTH + M_Date.singleton.StartOfMonth(date).ToString() + VALUE, monthValue + dayValue);
+    
+        SaveHabitBestMonth(name, DateTime.Parse(PlayerPrefs.GetString(HABIT + name + MONTH + DATE, M_Date.singleton.startOfCurrentMonth.ToString()), CultureInfo.InvariantCulture)); // Check if last month is best month
     }
     private static void SaveHabitYear(string name, DateTime date)
     {
-        if (PlayerPrefs.GetString(HABIT + name + YEAR + DATE) !=  M_Date.singleton.StartOfYear(date).ToString())
+        if (PlayerPrefs.GetString(HABIT + name + YEAR + DATE) != M_Date.singleton.startOfCurrentYear.ToString())
         {
-            SaveHabitBestYear(name, DateTime.Parse(PlayerPrefs.GetString(HABIT + name + YEAR + DATE, M_Date.singleton.startOfCurrentYear.ToString()), CultureInfo.InvariantCulture)); // Check if last year is best year
-
-            PlayerPrefs.SetString(HABIT + name + YEAR + DATE, M_Date.singleton.StartOfYear(date).ToString());
+            PlayerPrefs.SetString(HABIT + name + YEAR + DATE, M_Date.singleton.startOfCurrentYear.ToString());
 
             PlayerPrefs.SetInt(HABIT + name + YEAR + COMPLETIONS, 0);
             PlayerPrefs.SetFloat(HABIT + name + YEAR + VALUE, 0);
@@ -257,14 +252,14 @@ public class M_SaveLoad : MonoBehaviour
 
         PlayerPrefs.SetInt(HABIT + name + YEAR + M_Date.singleton.StartOfYear(date).ToString() + COMPLETIONS, yearCompletions + dayCompletion);
         PlayerPrefs.SetFloat(HABIT + name + YEAR + M_Date.singleton.StartOfYear(date).ToString() + VALUE, yearValue + dayValue);
+
+        SaveHabitBestYear(name, DateTime.Parse(PlayerPrefs.GetString(HABIT + name + YEAR + DATE, M_Date.singleton.startOfCurrentYear.ToString()), CultureInfo.InvariantCulture)); // Check if last year is best year
     }
     private static void SaveHabitStreak(string name, DateTime date)
     {
-        if (PlayerPrefs.GetString(HABIT + name + STREAK + DATE) != date.ToString())
+        if (PlayerPrefs.GetString(HABIT + name + STREAK + DATE) != M_Date.singleton.today.ToString())
         {
-            SaveHabitBestStreak(name); // Everyday  check if prevStreak is best streak
-
-            PlayerPrefs.SetString(HABIT + name + STREAK + DATE, date.ToString());
+            PlayerPrefs.SetString(HABIT + name + STREAK + DATE, M_Date.singleton.today.ToString());
 
             PlayerPrefs.SetInt(HABIT + name + STREAK + START + COMPLETIONS, PlayerPrefs.GetInt(HABIT + name + STREAK + COMPLETIONS));
             PlayerPrefs.SetFloat(HABIT + name + STREAK + START + VALUE, PlayerPrefs.GetFloat(HABIT + name + STREAK + VALUE));
@@ -289,6 +284,7 @@ public class M_SaveLoad : MonoBehaviour
         if(dayCompletion == 1)
             PlayerPrefs.SetString(HABIT + name + STREAK + END + DATE, date.ToString());
 
+        SaveHabitBestStreak(name); // Everyday  check if prevStreak is best streak
     }
 
 
@@ -299,7 +295,10 @@ public class M_SaveLoad : MonoBehaviour
         LoadHabitDay(name, date, out int dayCompletion, out float dayValue);
         LoadHabitBestDay(name, out DateTime bestWeekDate, out int bestDayCompletion, out float bestDayValue);
 
-        if (dayCompletion <= bestDayCompletion)
+        if (LoadHabitType(name) == HabitType.yesOrNo && dayCompletion <= bestDayCompletion)
+                return;
+
+        if (LoadHabitType(name) == HabitType.measurable && dayValue <= bestDayValue)
             return;
 
         PlayerPrefs.SetString(HABIT + name + BEST + DAY + DATE, date.ToString());

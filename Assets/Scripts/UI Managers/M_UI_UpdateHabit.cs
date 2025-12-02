@@ -41,6 +41,7 @@ public class M_UI_UpdateHabit : MonoBehaviour
         textName.text = habitToUpdate.data.name;
         textQuestion.text = habitToUpdate.data.question;
 
+        textQuestion.transform.parent.gameObject.SetActive(habitToUpdate.data.question != string.Empty);
 
         bool activeType = habitToUpdate.data.type == HabitType.yesOrNo;
 

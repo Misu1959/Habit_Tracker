@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using System;
-using UnityEngine.Events;
 
 public class M_UI_ColorPicker : MonoBehaviour
 {
+  
+    [SerializeField] private List<Color> colorsIndex;
+    private Dictionary<Color, int> colorsDictionary = new Dictionary<Color, int>();
+
+
+
     public static M_UI_ColorPicker singleton;
 
 
@@ -38,11 +43,14 @@ public class M_UI_ColorPicker : MonoBehaviour
             color.GetComponent<Button>().onClick.AddListener(AddRecolorAction);
         }
 
+        for (int i = 0; i < colorsIndex.Count; i++)
+            colorsDictionary.Add(colorsIndex[i], i);
+
     }
 
     private void AddRecolorAction()
     {
-        if (!M_UI_Main.singleton.panelDisplayHabit.gameObject.activeInHierarchy)
+        if (M_UI_Main.singleton.panelCreateHabit.gameObject.activeInHierarchy)
         {
             M_UI_Main.singleton.panelCreateHabit.GetComponent<PageColorizer>().Colorize(imageHabitColor.color);
             return;
@@ -51,9 +59,8 @@ public class M_UI_ColorPicker : MonoBehaviour
         M_UI_Main.singleton.panelDisplayHabit.GetComponent<PageColorizer>().Colorize(imageHabitColor.color);
 
         M_UI_DisplayHabit.singleton.GetDisplayHabit().Recolor(imageHabitColor.color);
+        M_UI_DisplayHabit.singleton.DisplayCalendar();
     }
-    
-
 
     public void ChangeSelectedColor(int colorIndex)
     {
@@ -63,14 +70,7 @@ public class M_UI_ColorPicker : MonoBehaviour
         imageHabitColor.color = colorsList.GetChild(colorIndex).GetComponent<Image>().color;
     }
 
-    public void ChangeSelectedColor(Color color)
-    {
-        int colorIndex;
+    public void ChangeSelectedColor(Color color) => ChangeSelectedColor(GetColorIndex(color));
 
-        for (colorIndex = 0; colorIndex < colorsList.childCount; colorIndex++)
-            if (colorsList.GetChild(colorIndex).GetComponent<Image>().color == color)
-                break;
-
-        ChangeSelectedColor(colorIndex);
-    }
+    public int GetColorIndex(Color colorToCheck) => !colorsDictionary.ContainsKey(colorToCheck) ? 0 : colorsDictionary[colorToCheck];
 }

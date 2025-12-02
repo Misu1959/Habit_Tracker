@@ -7,13 +7,6 @@ using System;
 
 public class M_UI_DisplayHabit : MonoBehaviour
 {
-    private enum StatusType
-    {
-        Completion,
-        Value
-    }
-
-
     public static M_UI_DisplayHabit singleton;
 
     private Habit habitToDisplay;
@@ -59,7 +52,6 @@ public class M_UI_DisplayHabit : MonoBehaviour
         SetButtonRecolorHabit();
         SetButtonDeleteHabit();
 
-        SetComparisonPage();
         SetHistoryPage();
         SetCalendarPage();
     }
@@ -101,9 +93,6 @@ public class M_UI_DisplayHabit : MonoBehaviour
         DisplayHabitName();
         DisplayHabitInfo();
 
-        DisplayTypeDropdowns();
-
-
         DisplayComparisonPage();
         DisplayHistoryPage();
         DisplayCalendarPage();
@@ -116,33 +105,15 @@ public class M_UI_DisplayHabit : MonoBehaviour
         M_SaveLoad.LoadHabitStatsTotal(habitToDisplay.data.name, out int totalCompletions, out float totalValue);
         M_SaveLoad.LoadHabitStreak(habitToDisplay.data.name, out DateTime startDate, out DateTime endDate, out int streakCompletion, out float streakValue);
 
-        
-        textStreak.text = "0";
+
+
+        textStreak.text = streakCompletion.ToString();
+
         textTotalCompletions.text = totalCompletions.ToString();
         textTotalValue.text = totalValue.ToString();
 
+        textTotalValue.transform.parent.gameObject.SetActive(habitToDisplay.data.type == HabitType.measurable);
     }
-
-
-    private void DisplayTypeDropdowns()
-    {
-        if(habitToDisplay.data.type == HabitType.yesOrNo)
-        {
-            dropdownComparisonType.gameObject.SetActive(false);
-            dropdownHistoryType.gameObject.SetActive(false);
-
-            textTotalValue.transform.parent.gameObject.SetActive(false);
-        }
-        else
-        {
-            dropdownComparisonType.gameObject.SetActive(true);
-            dropdownHistoryType.gameObject.SetActive(true);
-
-            textTotalValue.transform.parent.gameObject.SetActive(true);
-        }
-    }
-
-
 
     #endregion
 
@@ -151,7 +122,6 @@ public class M_UI_DisplayHabit : MonoBehaviour
     #region Stats Comparison 
 
     [Header("\tComparison page")]
-    [SerializeField]  private TMP_Dropdown dropdownComparisonType;
     
     [SerializeField] private Transform comparisonStreak;
     [SerializeField] private Transform comparisonDay;
@@ -159,127 +129,58 @@ public class M_UI_DisplayHabit : MonoBehaviour
     [SerializeField] private Transform comparisonMonth;
     [SerializeField] private Transform comparisonYear;
 
-
-    private void SetComparisonPage()
-    {
-        SetDropdownComparisonType();
-    }
-
-    private void SetDropdownComparisonType()
-        => dropdownComparisonType.onValueChanged.AddListener((int option) => RefreshComparisonPage((StatusType)option));
-
-
     private void DisplayComparisonPage()
     {
-        dropdownComparisonType.value = 0;
-
-        DisplayComparisonStreak(StatusType.Completion);
-        DisplayComparisonDay(StatusType.Completion);
-        DisplayComparisonWeek(StatusType.Completion);
-        DisplayComparisonMonth(StatusType.Completion);
-        DisplayComparisonYear(StatusType.Completion);
-    }
-    private void RefreshComparisonPage(StatusType statusType)
-    {
-        DisplayComparisonStreak(statusType);
-        DisplayComparisonDay(statusType);
-        DisplayComparisonWeek(statusType);
-        DisplayComparisonMonth(statusType);
-        DisplayComparisonYear(statusType);
+        DisplayComparisonStreak();
+        DisplayComparisonDay();
+        DisplayComparisonWeek();
+        DisplayComparisonMonth();
+        DisplayComparisonYear();
     }
 
-    private void DisplayComparisonStreak(StatusType statusType)
+    private void DisplayComparisonStreak()
     {
         M_SaveLoad.LoadHabitStreak(habitToDisplay.data.name, out DateTime streakStartDate, out DateTime streakEndDate, out int streakCompletions, out float streakValue);
         M_SaveLoad.LoadHabitBestStreak(habitToDisplay.data.name, out DateTime bestStreakStartDate, out DateTime bestStreakEndDate, out int bestStreakCompletions, out float bestStreakValue);
 
-        if (statusType == StatusType.Completion)
-        {
-            DisplayStats(comparisonStreak.GetChild(0), streakStartDate, streakEndDate, streakCompletions, bestStreakCompletions, M_Date.DAY_FORMAT);
-            DisplayStats(comparisonStreak.GetChild(1), bestStreakStartDate, bestStreakEndDate, bestStreakCompletions, bestStreakCompletions, M_Date.DAY_FORMAT);
-        }
-        else
-        {
-            DisplayStats(comparisonStreak.GetChild(0), streakStartDate, streakEndDate, streakValue, bestStreakValue, M_Date.DAY_FORMAT);
-            DisplayStats(comparisonStreak.GetChild(1), bestStreakStartDate, bestStreakEndDate, bestStreakValue, bestStreakValue, M_Date.DAY_FORMAT);
-        }
+
+
+        comparisonStreak.GetChild(0).GetComponentInChildren<HabitStats>().DisplayStats(habitToDisplay.data.type,streakCompletions, streakValue, M_Date.DAY_FORMAT, streakStartDate, streakEndDate);
+        comparisonStreak.GetChild(1).GetComponentInChildren<HabitStats>().DisplayStats(habitToDisplay.data.type, bestStreakCompletions, bestStreakValue, M_Date.DAY_FORMAT, bestStreakStartDate, bestStreakEndDate);
     }
-    private void DisplayComparisonDay(StatusType statusType)
+    private void DisplayComparisonDay()
     {
         M_SaveLoad.LoadHabitDay(habitToDisplay.data.name, M_Date.singleton.today, out int dayCompletion, out float dayValue);
         M_SaveLoad.LoadHabitBestDay(habitToDisplay.data.name, out DateTime bestDay, out int bestDayCompletion, out float bestDayValue);
 
-        if (statusType == StatusType.Completion)
-        {
-            DisplayStats(comparisonDay.GetChild(0), M_Date.singleton.today, M_Date.singleton.today.AddDays(1), dayCompletion, bestDayCompletion, M_Date.DAY_FORMAT);
-            DisplayStats(comparisonDay.GetChild(1), bestDay, bestDay.AddDays(1), bestDayCompletion, bestDayCompletion, M_Date.DAY_FORMAT);
-        }
-        else
-        {
-            DisplayStats(comparisonDay.GetChild(0), M_Date.singleton.today, M_Date.singleton.today.AddDays(1), dayValue, bestDayValue, M_Date.DAY_FORMAT);
-            DisplayStats(comparisonDay.GetChild(1), bestDay, bestDay.AddDays(1), bestDayValue, bestDayValue, M_Date.DAY_FORMAT);
-        }
+        comparisonDay.GetChild(0).GetComponentInChildren<HabitStats>().DisplayStats(habitToDisplay.data.type, dayCompletion, dayValue, M_Date.DAY_FORMAT, M_Date.singleton.today);
+        comparisonDay.GetChild(1).GetComponentInChildren<HabitStats>().DisplayStats(habitToDisplay.data.type, bestDayCompletion, bestDayValue, M_Date.DAY_FORMAT, bestDay);
     }
-    private void DisplayComparisonWeek(StatusType statusType)
+    private void DisplayComparisonWeek()
     {
         M_SaveLoad.LoadHabitWeek(habitToDisplay.data.name, M_Date.singleton.today, out int weekCompletions, out float weekValue);
         M_SaveLoad.LoadHabitBestWeek(habitToDisplay.data.name, out DateTime bestWeekStartDate, out int bestWeekCompletions, out float bestWeekValue);
 
-        if (statusType == StatusType.Completion)
-        {
-            DisplayStats(comparisonWeek.GetChild(0), M_Date.singleton.startOfCurrentWeek, M_Date.singleton.startOfCurrentWeek.AddDays(7), weekCompletions, bestWeekCompletions, M_Date.DAY_FORMAT);
-            DisplayStats(comparisonWeek.GetChild(1), bestWeekStartDate, bestWeekStartDate.AddDays(7), bestWeekCompletions, bestWeekCompletions, M_Date.DAY_FORMAT);
-        }
-        else
-        {
-            DisplayStats(comparisonWeek.GetChild(0), M_Date.singleton.startOfCurrentWeek, M_Date.singleton.startOfCurrentWeek.AddDays(7), weekValue, bestWeekValue, M_Date.DAY_FORMAT);
-            DisplayStats(comparisonWeek.GetChild(1), bestWeekStartDate, bestWeekStartDate.AddDays(7), bestWeekValue, bestWeekValue, M_Date.DAY_FORMAT);
-        }
+        comparisonWeek.GetChild(0).GetComponentInChildren<HabitStats>().DisplayStats(habitToDisplay.data.type, weekCompletions, weekValue, M_Date.DAY_FORMAT, M_Date.singleton.startOfCurrentWeek, M_Date.singleton.startOfCurrentWeek.AddDays(7));
+        comparisonWeek.GetChild(1).GetComponentInChildren<HabitStats>().DisplayStats(habitToDisplay.data.type, bestWeekCompletions, bestWeekValue, M_Date.DAY_FORMAT, bestWeekStartDate, bestWeekStartDate.AddDays(7));
     }
-    private void DisplayComparisonMonth(StatusType statusType)
+    private void DisplayComparisonMonth()
     {
         M_SaveLoad.LoadHabitMonth(habitToDisplay.data.name, M_Date.singleton.today, out int monthCompletions, out float monthValue);
         M_SaveLoad.LoadHabitBestMonth(habitToDisplay.data.name, out DateTime bestMonthStartDate, out int bestMonthCompletions, out float bestMonthValue);
 
-        if (statusType == StatusType.Completion)
-        {
-            DisplayStats(comparisonMonth.GetChild(0), M_Date.singleton.startOfCurrentMonth, M_Date.singleton.startOfCurrentMonth.AddMonths(1), monthCompletions, bestMonthCompletions, M_Date.MONTH_FORMAT);
-            DisplayStats(comparisonMonth.GetChild(1), bestMonthStartDate, bestMonthStartDate.AddMonths(1), bestMonthCompletions, bestMonthCompletions, M_Date.MONTH_FORMAT);
-        }
-        else
-        {
-            DisplayStats(comparisonMonth.GetChild(0), M_Date.singleton.startOfCurrentMonth, M_Date.singleton.startOfCurrentMonth.AddMonths(1), monthValue, bestMonthValue, M_Date.MONTH_FORMAT);
-            DisplayStats(comparisonMonth.GetChild(1), bestMonthStartDate, bestMonthStartDate.AddMonths(1), bestMonthValue, bestMonthValue, M_Date.MONTH_FORMAT);
-        }
-    
+        comparisonMonth.GetChild(0).GetComponentInChildren<HabitStats>().DisplayStats(habitToDisplay.data.type, monthCompletions, monthValue, M_Date.MONTH_FORMAT, M_Date.singleton.startOfCurrentMonth);
+        comparisonMonth.GetChild(1).GetComponentInChildren<HabitStats>().DisplayStats(habitToDisplay.data.type, bestMonthCompletions, bestMonthValue, M_Date.MONTH_FORMAT, bestMonthStartDate);
     }
 
-    private void DisplayComparisonYear(StatusType statusType)
+    private void DisplayComparisonYear()
     {
         M_SaveLoad.LoadHabitYear(habitToDisplay.data.name, M_Date.singleton.today, out int yearCompletions, out float yearValue);
         M_SaveLoad.LoadHabitBestYear(habitToDisplay.data.name, out DateTime bestYearStartDate, out int bestYearCompletions, out float bestYearValue);
 
-        if (statusType == StatusType.Completion)
-        {
-            DisplayStats(comparisonYear.GetChild(0), M_Date.singleton.startOfCurrentYear, M_Date.singleton.startOfCurrentYear.AddYears(1), yearCompletions, bestYearCompletions, M_Date.YEAR_FORMAT);
-            DisplayStats(comparisonYear.GetChild(1), bestYearStartDate, bestYearStartDate.AddYears(1), bestYearCompletions, bestYearCompletions, M_Date.YEAR_FORMAT);
-        }
-        else
-        {
-            DisplayStats(comparisonYear.GetChild(0), M_Date.singleton.startOfCurrentYear, M_Date.singleton.startOfCurrentYear.AddYears(1), yearValue, bestYearValue, M_Date.YEAR_FORMAT);
-            DisplayStats(comparisonYear.GetChild(1), bestYearStartDate, bestYearStartDate.AddYears(1), bestYearValue, bestYearValue, M_Date.YEAR_FORMAT);
-        }
-    }
 
-
-
-    private void DisplayStats(Transform stats, DateTime startDate, DateTime endDate, float status,float maxStatus, string dateFormat)
-    {
-        stats.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = (maxStatus == 0) ? 1 : status / maxStatus;
-        stats.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = status.ToString();
-
-        stats.GetChild(1).GetComponent<TextMeshProUGUI>().text = startDate.ToString(dateFormat);
-        stats.GetChild(2).GetComponent<TextMeshProUGUI>().text = endDate.ToString(dateFormat);
+        comparisonYear.GetChild(0).GetComponentInChildren<HabitStats>().DisplayStats(habitToDisplay.data.type, yearCompletions, yearValue, M_Date.YEAR_FORMAT, M_Date.singleton.startOfCurrentYear);
+        comparisonYear.GetChild(1).GetComponentInChildren<HabitStats>().DisplayStats(habitToDisplay.data.type, bestYearCompletions, bestYearValue, M_Date.YEAR_FORMAT, bestYearStartDate);
     }
 
     #endregion
@@ -287,15 +188,220 @@ public class M_UI_DisplayHabit : MonoBehaviour
 
     #region History
     [Header("\tComparison page")]
-    [SerializeField] private TMP_Dropdown dropdownHistoryType;
+    [SerializeField] private ScrollRect scrollRectHistory;
+    [SerializeField] private TMP_Dropdown dropdownHistoryTimePeriod;
+
+
+    private List<RectTransform> pool = new List<RectTransform>();
+
+    private float itemHeight = 125f; // height + buffer
+
+
+    private int dataCount;
+    private float previousScroll;
+    private int topDataIndex = 0;
+
+
 
     private void SetHistoryPage()
     {
+        SetDropdownHistoryTimePeriod();
+        SetHistoryScrollRect();
     }
+
+    private void SetDropdownHistoryTimePeriod()
+        => dropdownHistoryTimePeriod.onValueChanged.AddListener((int option) => SetDataCount(CalculateNumberOfStats(option)));
+    private void SetHistoryScrollRect()
+    {
+        scrollRectHistory.onValueChanged.AddListener(_ => RecycleIfNeeded());
+
+
+        foreach (RectTransform item in scrollRectHistory.content)
+            pool.Add(item);
+
+        UpdateContentHeight();
+    }
+
 
     private void DisplayHistoryPage()
     {
+        dropdownHistoryTimePeriod.SetValueWithoutNotify(0);
+        dropdownHistoryTimePeriod.onValueChanged.Invoke(0);
+    }
 
+
+    public void SetDataCount(int newDataCount)
+    {
+        dataCount = newDataCount;
+
+        UpdateContentHeight();
+        RefreshPool();
+    }
+    
+    
+    private void RefreshPool()
+    {
+        topDataIndex = 0;
+
+        for (int i = 0; i < pool.Count; i++)
+        {
+            int dataIndex = topDataIndex + i;
+            if (dataIndex >= dataCount)
+                pool[i].gameObject.SetActive(false);
+            else
+            {
+                pool[i].gameObject.SetActive(true);
+                SetItemPosition(pool[i], dataIndex); UpdateItem(pool[i], dataIndex);
+            }
+        }
+    }
+    private void RecycleIfNeeded()
+    {
+        if (pool.Count == 0)
+            return;
+
+        float scrollY = scrollRectHistory.content.anchoredPosition.y;
+        float viewportHeight = scrollRectHistory.viewport.rect.height;
+
+        if (scrollY > previousScroll)
+        {
+            RectTransform first = pool[0];
+
+            float topItemPos = topDataIndex * itemHeight;
+            if (topItemPos + itemHeight < scrollY - itemHeight)
+            {
+                pool.RemoveAt(0);
+                pool.Add(first);
+
+                topDataIndex++;
+
+                int newDataIndex = topDataIndex + pool.Count - 1;
+                if (newDataIndex < dataCount)
+                {
+                    SetItemPosition(first, newDataIndex);
+                    UpdateItem(first, newDataIndex);
+                }
+            }
+        }
+        else
+        {
+            RectTransform last = pool[pool.Count - 1];
+            int lastDataIndex = topDataIndex + pool.Count - 1;
+
+            float lastItemPos = lastDataIndex * itemHeight;
+            if (lastItemPos > scrollY + viewportHeight + itemHeight)
+            {
+                pool.RemoveAt(pool.Count - 1);
+                pool.Insert(0, last);
+
+                topDataIndex--;
+
+                int newDataIndex = topDataIndex;
+                if (newDataIndex >= 0)
+                {
+                    SetItemPosition(last, newDataIndex);
+                    UpdateItem(last, newDataIndex);
+                }
+            }
+        }
+
+        previousScroll = scrollY;
+    }
+    private void UpdateContentHeight()
+        => scrollRectHistory.content.sizeDelta = new Vector2(scrollRectHistory.content.sizeDelta.x, dataCount * itemHeight);
+
+
+
+    private void SetItemPosition(RectTransform item, int dataIndex)
+        => item.anchoredPosition = new Vector2(0, -dataIndex * itemHeight);
+    private void UpdateItem(RectTransform item, int dataIndex)
+    {
+        int val = dataCount - dataIndex - 1;
+
+        switch (dropdownHistoryTimePeriod.value)
+        {
+            case 0: // Daily
+                DateTime dayDate = habitToDisplay.data.creationDate.AddDays(val);
+
+                M_SaveLoad.LoadHabitDay(habitToDisplay.data.name, dayDate, out int dayCompletion, out float dayValue);
+                item.GetComponent<HabitStats>().DisplayStats(habitToDisplay.data.type, dayCompletion, dayValue, M_Date.DAY_FORMAT, dayDate);
+                break;
+            case 1: // Weekly
+                DateTime weekDate = habitToDisplay.data.creationDate.AddDays(7*val);
+
+                M_SaveLoad.LoadHabitWeek(habitToDisplay.data.name, weekDate, out int weekCompletion, out float weekValue);
+                item.GetComponent<HabitStats>().DisplayStats(habitToDisplay.data.type, weekCompletion, weekValue, M_Date.DAY_FORMAT, weekDate, weekDate.AddDays(7));
+                break;
+            case 2: // Monthly
+                DateTime monthDate = habitToDisplay.data.creationDate.AddMonths(val);
+
+                M_SaveLoad.LoadHabitMonth(habitToDisplay.data.name, monthDate, out int monthCompletions, out float monthValue);
+                item.GetComponent<HabitStats>().DisplayStats(habitToDisplay.data.type, monthCompletions, monthValue, M_Date.MONTH_FORMAT, monthDate);
+                break;
+            case 3: // Yearly
+                DateTime yearDate = habitToDisplay.data.creationDate.AddYears(val);
+
+                M_SaveLoad.LoadHabitYear(habitToDisplay.data.name, yearDate, out int yearCompletions, out float yearValue);
+                item.GetComponent<HabitStats>().DisplayStats(habitToDisplay.data.type, yearCompletions, yearValue, M_Date.YEAR_FORMAT, yearDate);
+                break;
+        }
+
+    }
+
+
+    private int CalculateNumberOfStats(int dropdownOption)
+    {
+        var timeDiff = GetDifference(habitToDisplay.data.creationDate, M_Date.singleton.today);
+
+        switch (dropdownOption)
+        {
+            case 0: // Daily
+                return timeDiff.days;
+            case 1: // Weekly
+                return timeDiff.weeks;
+            case 2: // Monthly
+                return timeDiff.months;
+            case 3: // Yearly
+                return timeDiff.years;
+        }
+
+        return 0;
+    }
+    private (int years, int months, int weeks, int days) GetDifference(DateTime start, DateTime end)
+    {
+        int totalDays = (end - start).Days;
+
+        int years = end.Year - start.Year;
+        int months = end.Month - start.Month;
+        int days = end.Day - start.Day;
+
+        bool addHalfMonth = false;
+        bool addHalfYear = false;
+
+        if (days < 0)
+        {
+            end = end.AddMonths(-1);
+            days += DateTime.DaysInMonth(end.Year, end.Month);
+            months--;
+
+            addHalfMonth = true;
+        }
+
+        if (months < 0)
+        {
+            months += 12;
+            years--;
+
+            addHalfYear = true;
+        }
+
+        if (addHalfMonth)
+            months++;
+
+        if(addHalfYear)
+            years++;
+
+        return (years + 1, 12 * years + months + 1, totalDays / 7 + 1, totalDays + 1);
     }
 
     #endregion
@@ -318,6 +424,7 @@ public class M_UI_DisplayHabit : MonoBehaviour
         {"November",10},
         {"December",11}
     };
+    int prevMonth;
 
 
     private DateTime calendarDate = new DateTime();
@@ -330,10 +437,10 @@ public class M_UI_DisplayHabit : MonoBehaviour
 
 
     [SerializeField] private Transform calendar;
+    [SerializeField] private Image imageToday;
     [SerializeField] private TextMeshProUGUI textNoteStatus;
     [SerializeField] private TextMeshProUGUI textNote;
 
-    int prevMonth;
 
     private void SetCalendarPage()
     {
@@ -503,8 +610,10 @@ public class M_UI_DisplayHabit : MonoBehaviour
 
 
 
-    private void DisplayCalendar()
+    public void DisplayCalendar()
     {
+        imageToday.gameObject.SetActive(false);
+
         DateTime prevCalendarPage = M_Date.singleton.StartOfMonth(calendarDate.AddMonths(-1));
         DateTime nextCalendarPage = M_Date.singleton.StartOfMonth(calendarDate.AddMonths(1));
 
@@ -525,11 +634,12 @@ public class M_UI_DisplayHabit : MonoBehaviour
 
         for (int dayNum = 1; dayNum <= 42 - (daysInMonth + start); dayNum++)
             SetDayButton(cellCounter++, new DateTime(nextCalendarPage.Year, nextCalendarPage.Month, dayNum), true);
+
     }
     private void DisplayNote(DateTime date, int completion, float value)
     {
-        string completionStatus = completion == 1 ? " you achieved your goal." : " you didn't achieved your goal.";
-        string valueStatus = habitToDisplay.data.type == HabitType.yesOrNo ? "" : value + " / " + habitToDisplay.data.targetAmount + habitToDisplay.data.unit;
+        string completionStatus = completion == 1 ? " you achieved your goal." : " you didn't achieve your goal.";
+        string valueStatus = habitToDisplay.data.type == HabitType.yesOrNo ? "" : value + "/" + habitToDisplay.data.targetAmount +" "+ habitToDisplay.data.unit;
 
 
         if (date < habitToDisplay.data.creationDate)
@@ -558,21 +668,35 @@ public class M_UI_DisplayHabit : MonoBehaviour
         M_SaveLoad.LoadHabitDay(habitToDisplay.data.name, date, out int completion, out float value);
 
 
-        Color dayColor = (completion == 0) ? new Color(232, 232, 232) : habitToDisplay.data.color;
-        
-        if(date < habitToDisplay.data.creationDate)
+        Color dayColor = (completion == 0) ? Color.white : habitToDisplay.data.color;
+
+        if (date < habitToDisplay.data.creationDate)
             dayColor.a = .25f;
-        else if(date > M_Date.singleton.today)
-            dayColor.a = .25f;
-        else
-            dayColor.a = isOtherMonth ? .5f : 1f;
+        else if (date > M_Date.singleton.today)
+            dayColor.a = isOtherMonth ? .33f : .66f;
+        else if (date <= M_Date.singleton.today)
+            dayColor.a = isOtherMonth ? .33f : 1;
 
         day.GetComponent<Image>().color = dayColor;
         
         day.GetComponent<Button>().onClick.RemoveAllListeners();
         day.GetComponent<Button>().onClick.AddListener(() => DisplayNote(date, completion, value));
     
-        day.GetComponentInChildren<TextMeshProUGUI>().text = date.Day.ToString(); 
+        day.GetComponentInChildren<TextMeshProUGUI>().text = date.Day.ToString();
+
+        if (date == M_Date.singleton.today)
+        {
+            imageToday.gameObject.SetActive(true);
+
+
+            imageToday.transform.SetParent(day);
+            imageToday.transform.SetAsFirstSibling();
+            imageToday.transform.localPosition = Vector2.zero;
+            
+            
+            imageToday.color = new Color(0, 0, 0, .5f);
+
+        }
     }
 
     #endregion

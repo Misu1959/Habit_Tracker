@@ -92,6 +92,9 @@ public class InputFieldSettings : MonoBehaviour
 
     private char ValidateDigitCharacter(string text, string validCharacters, char characterToAdd)
     {
+        inputField.characterLimit = !text.Contains('.') ? charLimit : charLimit + 3;
+
+
         char invalidChar = '\0';
 
 
@@ -101,7 +104,8 @@ public class InputFieldSettings : MonoBehaviour
             return invalidChar;
         else if (text.Contains(characterToAdd) && characterToAdd == '.')
             return invalidChar;
-
+        else if (text.Contains('.') && (text.Length - text.IndexOf('.')) > 2)
+            return invalidChar;
 
         return characterToAdd;
     }

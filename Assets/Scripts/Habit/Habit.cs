@@ -44,7 +44,7 @@ public class Habit : MonoBehaviour
 
 
         int val = 0;
-        foreach (Transform dayTransform in weekDays)
+        foreach (Button dayButton in weekDays.GetComponentsInChildren<Button>())
         {
             int curentVal = val;
             val++;
@@ -52,15 +52,11 @@ public class Habit : MonoBehaviour
             DateTime day = M_Date.singleton.startOfCurrentWeek.AddDays(curentVal);
 
 
-            if (day != DateTime.Today)
-                dayTransform.GetComponent<Button>().interactable = false;
-            else
-            {
-                dayTransform.GetComponent<Button>().interactable = true;
-                
-                dayTransform.GetComponent<Button>().onClick.AddListener(M_UI_Main.singleton.OpenUpdateHabitMenu);
-                dayTransform.GetComponent<Button>().onClick.AddListener(() => M_UI_UpdateHabit.singleton.ChangeHabitToUpdate(this, day));
-            }
+            dayButton.onClick.AddListener(M_UI_Main.singleton.OpenUpdateHabitMenu);
+            dayButton.onClick.AddListener(() => M_UI_UpdateHabit.singleton.ChangeHabitToUpdate(this, day));
+
+            dayButton.interactable = (day == M_Date.singleton.today);
+            dayButton.GetComponent<Image>().raycastTarget = (day == M_Date.singleton.today);
         }
     }
 
@@ -68,8 +64,11 @@ public class Habit : MonoBehaviour
     public void TurnButtonsOnOff(bool mode)
     {
         GetComponent<Button>().enabled = mode;
-        foreach (Transform dayTransform in weekDays)
-            dayTransform.GetComponent<Button>().enabled = mode;
+        foreach (Button dayButton in weekDays.GetComponentsInChildren<Button>())
+        {
+            dayButton.enabled = mode;
+            dayButton.GetComponent<Image>().raycastTarget = mode;
+        }
     }
 
 
@@ -137,14 +136,16 @@ public class Habit : MonoBehaviour
         {
             DateTime dayOfWeek = M_Date.singleton.startOfCurrentWeek.AddDays(i);
 
-            Color32 color;
+            Color color = !IsGoalAchieved(dayOfWeek) ? Color.white : data.color;
 
 
-
-            if (dayOfWeek <= M_Date.singleton.today)
-                color = !IsGoalAchieved(dayOfWeek) ? Color.gray : data.color;
+            if (dayOfWeek == M_Date.singleton.today)
+                color.a = 1;
+            else if (dayOfWeek < M_Date.singleton.today)
+                color.a = .33f;
             else
-                color = Color.white;
+                color.a = .5f;
+
 
 
             Transform day = weekDays.GetChild(i);
