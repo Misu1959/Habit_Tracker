@@ -1,0 +1,188 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Unity\\Projects\\Habit-Tracker\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|e:\\unity\\projects\\habit-tracker\\assets\\scripts\\ui managers\\m_ui_displayhabit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui managers\\m_ui_displayhabit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|E:\\Unity\\Projects\\Habit-Tracker\\assets\\scripts\\ui managers\\m_ui_createhabit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui managers\\m_ui_createhabit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|E:\\Unity\\Projects\\Habit-Tracker\\assets\\scripts\\managers\\m_habits.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\managers\\m_habits.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|e:\\unity\\projects\\habit-tracker\\assets\\scripts\\ui managers\\m_ui_colorpicker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui managers\\m_ui_colorpicker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|E:\\Unity\\Projects\\Habit-Tracker\\assets\\scripts\\ui managers\\m_ui_sorthabits.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui managers\\m_ui_sorthabits.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|e:\\unity\\projects\\habit-tracker\\assets\\scripts\\ui managers\\m_ui_main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui managers\\m_ui_main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|E:\\Unity\\Projects\\Habit-Tracker\\assets\\scripts\\m_saveload.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\m_saveload.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|E:\\Unity\\Projects\\Habit-Tracker\\assets\\scripts\\habit\\habit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\habit\\habit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|E:\\Unity\\Projects\\Habit-Tracker\\assets\\scripts\\habit\\habitdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\habit\\habitdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|E:\\Unity\\Projects\\Habit-Tracker\\assets\\scripts\\managers\\m_date.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{663CB5C1-9103-AA80-6B81-B5C485F833A0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\managers\\m_date.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "M_UI_Main.cs",
+              "DocumentMoniker": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\UI Managers\\M_UI_Main.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\UI Managers\\M_UI_Main.cs",
+              "ToolTip": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\UI Managers\\M_UI_Main.cs",
+              "RelativeToolTip": "Assets\\Scripts\\UI Managers\\M_UI_Main.cs",
+              "ViewState": "AgIAAGkAAAAAAAAAAAAowH0AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T14:48:29.733Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "M_SaveLoad.cs",
+              "DocumentMoniker": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\M_SaveLoad.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\M_SaveLoad.cs",
+              "ToolTip": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\M_SaveLoad.cs",
+              "RelativeToolTip": "Assets\\Scripts\\M_SaveLoad.cs",
+              "ViewState": "AgIAALYAAAAAAAAAAAAkwPAAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-29T21:52:55.259Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "M_UI_DisplayHabit.cs",
+              "DocumentMoniker": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\UI Managers\\M_UI_DisplayHabit.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\UI Managers\\M_UI_DisplayHabit.cs",
+              "ToolTip": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\UI Managers\\M_UI_DisplayHabit.cs",
+              "RelativeToolTip": "Assets\\Scripts\\UI Managers\\M_UI_DisplayHabit.cs",
+              "ViewState": "AgIAAI8AAAAAAAAAAAArwK8AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-02T19:33:03.825Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "M_UI_ColorPicker.cs",
+              "DocumentMoniker": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\UI Managers\\M_UI_ColorPicker.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\UI Managers\\M_UI_ColorPicker.cs",
+              "ToolTip": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\UI Managers\\M_UI_ColorPicker.cs",
+              "RelativeToolTip": "Assets\\Scripts\\UI Managers\\M_UI_ColorPicker.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAwC4AAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-02T18:14:41.944Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "M_Habits.cs",
+              "DocumentMoniker": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\Managers\\M_Habits.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Managers\\M_Habits.cs",
+              "ToolTip": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\Managers\\M_Habits.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Managers\\M_Habits.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAjwD0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-02T11:18:43.818Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "HabitData.cs",
+              "DocumentMoniker": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\Habit\\HabitData.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Habit\\HabitData.cs",
+              "ToolTip": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\Habit\\HabitData.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Habit\\HabitData.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAADgvywAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-02T11:15:06.404Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "M_UI_SortHabits.cs",
+              "DocumentMoniker": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\UI Managers\\M_UI_SortHabits.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\UI Managers\\M_UI_SortHabits.cs",
+              "ToolTip": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\UI Managers\\M_UI_SortHabits.cs",
+              "RelativeToolTip": "Assets\\Scripts\\UI Managers\\M_UI_SortHabits.cs",
+              "ViewState": "AgIAAGUAAAAAAAAAAAD4v5wAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-02T11:14:36.972Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "M_UI_CreateHabit.cs",
+              "DocumentMoniker": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\UI Managers\\M_UI_CreateHabit.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\UI Managers\\M_UI_CreateHabit.cs",
+              "ToolTip": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\UI Managers\\M_UI_CreateHabit.cs",
+              "RelativeToolTip": "Assets\\Scripts\\UI Managers\\M_UI_CreateHabit.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAAowFAAAABSAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T19:45:37.244Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "M_Date.cs",
+              "DocumentMoniker": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\Managers\\M_Date.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Managers\\M_Date.cs",
+              "ToolTip": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\Managers\\M_Date.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Managers\\M_Date.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T13:05:10.313Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Habit.cs",
+              "DocumentMoniker": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\Habit\\Habit.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Habit\\Habit.cs",
+              "ToolTip": "E:\\Unity\\Projects\\Habit-Tracker\\Assets\\Scripts\\Habit\\Habit.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Habit\\Habit.cs",
+              "ViewState": "AgIAADsAAAAAAAAAAAAswFUAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T12:40:00.794Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
