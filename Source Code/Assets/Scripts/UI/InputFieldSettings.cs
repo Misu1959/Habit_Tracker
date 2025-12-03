@@ -17,7 +17,7 @@ public enum InputFieldType
 public class InputFieldSettings : MonoBehaviour
 {
 
-    const string ALPHABET   = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ .!?";
+    const string ALPHABET   = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ";
     const string DIGITS     = "1234567890.";
     const string SIGNS      = ".!?";
 
@@ -56,7 +56,11 @@ public class InputFieldSettings : MonoBehaviour
 
     private void Setup()
     {
-        inputField.onValueChanged.AddListener((text) => onValueChangeCheck?.Invoke());
+        inputField.onValueChanged.AddListener((text) =>
+        {
+            inputField.characterLimit = !text.Contains('.') ? charLimit : charLimit + 3;
+            onValueChangeCheck?.Invoke();
+        });
 
         inputField.characterLimit = charLimit;
 
@@ -67,6 +71,7 @@ public class InputFieldSettings : MonoBehaviour
 
             inputField.onEndEdit.AddListener((string text) =>
             {
+
                 if (text.EndsWith("."))
                     text = text.TrimEnd('.');
 

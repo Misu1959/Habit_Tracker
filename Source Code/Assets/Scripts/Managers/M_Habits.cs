@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class M_Habits : MonoBehaviour
@@ -51,6 +52,7 @@ public class M_Habits : MonoBehaviour
 
         habitList.Add(habit);
 
+        habit.Recolor(newData.color);
 
         if (!loadHabit)
         {

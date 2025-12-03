@@ -261,14 +261,17 @@ public class M_SaveLoad : MonoBehaviour
         {
             PlayerPrefs.SetString(HABIT + name + STREAK + DATE, M_Date.singleton.today.ToString());
 
-            PlayerPrefs.SetInt(HABIT + name + STREAK + START + COMPLETIONS, PlayerPrefs.GetInt(HABIT + name + STREAK + COMPLETIONS));
-            PlayerPrefs.SetFloat(HABIT + name + STREAK + START + VALUE, PlayerPrefs.GetFloat(HABIT + name + STREAK + VALUE));
-
             if (PlayerPrefs.GetInt(HABIT + name + STREAK + END) == 0)
             {
                 PlayerPrefs.SetString(HABIT + name + STREAK + START + DATE, date.ToString());
-                PlayerPrefs.SetString(HABIT + name + STREAK + END + DATE, date.ToString());
+                PlayerPrefs.SetString(HABIT + name + STREAK + END + DATE, date.AddDays(-1).ToString());
+
+                PlayerPrefs.SetInt(HABIT + name + STREAK + COMPLETIONS, 0);
+                PlayerPrefs.SetFloat(HABIT + name + STREAK + VALUE, 0);
             }
+
+            PlayerPrefs.SetInt(HABIT + name + STREAK + START + COMPLETIONS, PlayerPrefs.GetInt(HABIT + name + STREAK + COMPLETIONS));
+            PlayerPrefs.SetFloat(HABIT + name + STREAK + START + VALUE, PlayerPrefs.GetFloat(HABIT + name + STREAK + VALUE));
         }
 
         LoadHabitDay(name, date, out int dayCompletion, out float dayValue);
@@ -280,12 +283,20 @@ public class M_SaveLoad : MonoBehaviour
         PlayerPrefs.SetFloat(HABIT + name + STREAK + VALUE, streakValue + dayValue);
 
         PlayerPrefs.SetInt(HABIT + name + STREAK + END, dayCompletion);
-    
-        if(dayCompletion == 1)
-            PlayerPrefs.SetString(HABIT + name + STREAK + END + DATE, date.ToString());
 
+        if (dayCompletion == 1)
+            PlayerPrefs.SetString(HABIT + name + STREAK + END + DATE, date.ToString());
+        else
+        {
+            if(date.AddDays(-1) > DateTime.Parse(PlayerPrefs.GetString(HABIT + name + STREAK + START + DATE)))
+                PlayerPrefs.SetString(HABIT + name + STREAK + END + DATE, date.AddDays(-1).ToString());
+            else
+                PlayerPrefs.SetString(HABIT + name + STREAK + END + DATE, date.ToString());
+        }
         SaveHabitBestStreak(name); // Everyday  check if prevStreak is best streak
     }
+
+
 
 
 
@@ -295,70 +306,76 @@ public class M_SaveLoad : MonoBehaviour
         LoadHabitDay(name, date, out int dayCompletion, out float dayValue);
         LoadHabitBestDay(name, out DateTime bestWeekDate, out int bestDayCompletion, out float bestDayValue);
 
-        if (LoadHabitType(name) == HabitType.yesOrNo && dayCompletion <= bestDayCompletion)
-                return;
+        if (PlayerPrefs.GetString(HABIT + name + BEST + DAY + DATE) == M_Date.singleton.today.ToString() ||
+            dayValue > bestDayValue)
+        { 
+            PlayerPrefs.SetString(HABIT + name + BEST + DAY + DATE, date.ToString());
 
-        if (LoadHabitType(name) == HabitType.measurable && dayValue <= bestDayValue)
-            return;
-
-        PlayerPrefs.SetString(HABIT + name + BEST + DAY + DATE, date.ToString());
-
-        PlayerPrefs.SetInt(HABIT + name + BEST + DAY + COMPLETIONS, dayCompletion);
-        PlayerPrefs.SetFloat(HABIT + name + BEST + DAY + VALUE, dayValue);
+            PlayerPrefs.SetInt(HABIT + name + BEST + DAY + COMPLETIONS, dayCompletion);
+            PlayerPrefs.SetFloat(HABIT + name + BEST + DAY + VALUE, dayValue);
+        } 
     }
     private static void SaveHabitBestWeek(string name, DateTime date)
     {
         LoadHabitWeek(name, date, out int weekCompletions, out float weekValue);
         LoadHabitBestWeek(name, out DateTime bestWeekDate, out int bestWeekCompletions, out float bestWeekValue);
 
-        if (weekCompletions <= bestWeekCompletions)
-            return;
 
-        PlayerPrefs.SetString(HABIT + name + BEST + WEEK + DATE, M_Date.singleton.StartOfWeek(date).ToString());
+        if (PlayerPrefs.GetString(HABIT + name + BEST + WEEK + DATE) == M_Date.singleton.startOfCurrentWeek.ToString() ||
+            weekCompletions > bestWeekCompletions
+            )
+        {
+            PlayerPrefs.SetString(HABIT + name + BEST + WEEK + DATE, M_Date.singleton.StartOfWeek(date).ToString());
 
-        PlayerPrefs.SetInt(HABIT + name + BEST + WEEK + COMPLETIONS, weekCompletions);
-        PlayerPrefs.SetFloat(HABIT + name + BEST + WEEK + VALUE, weekValue);
+            PlayerPrefs.SetInt(HABIT + name + BEST + WEEK + COMPLETIONS, weekCompletions);
+            PlayerPrefs.SetFloat(HABIT + name + BEST + WEEK + VALUE, weekValue);
+        }
     }
     private static void SaveHabitBestMonth(string name, DateTime date)
     {
         LoadHabitMonth(name, date, out int monthCompletions, out float monthValue);
         LoadHabitBestMonth(name, out DateTime bestMonthDate, out int bestMonthCompletions, out float bestMonthValue);
 
-        if (monthCompletions <= bestMonthCompletions)
-            return;
+        if (PlayerPrefs.GetString(HABIT + name + BEST + MONTH + DATE) == M_Date.singleton.startOfCurrentMonth.ToString() ||
+            monthCompletions > bestMonthCompletions
+            )
+        {
 
-        PlayerPrefs.SetString(HABIT + name + BEST + MONTH + DATE, M_Date.singleton.StartOfMonth(date).ToString());
+            PlayerPrefs.SetString(HABIT + name + BEST + MONTH + DATE, M_Date.singleton.StartOfMonth(date).ToString());
 
-        PlayerPrefs.SetInt(HABIT + name + BEST + MONTH + COMPLETIONS, monthCompletions);
-        PlayerPrefs.SetFloat(HABIT + name + BEST + MONTH + VALUE, monthValue);
+            PlayerPrefs.SetInt(HABIT + name + BEST + MONTH + COMPLETIONS, monthCompletions);
+            PlayerPrefs.SetFloat(HABIT + name + BEST + MONTH + VALUE, monthValue);
+        }
     }
     private static void SaveHabitBestYear(string name, DateTime date)
     {
         LoadHabitYear(name, date, out int yearCompletions, out float yearValue);
         LoadHabitBestYear(name, out DateTime bestYearDate, out int bestYearCompletions, out float bestYearValue);
 
-        if (yearCompletions <= bestYearCompletions)
-            return;
+        if (PlayerPrefs.GetString(HABIT + name + BEST + YEAR + DATE) == M_Date.singleton.startOfCurrentYear.ToString() ||
+            yearCompletions > bestYearCompletions
+            )
+        {
+            PlayerPrefs.SetString(HABIT + name + BEST + YEAR + DATE, M_Date.singleton.StartOfYear(date).ToString());
 
-        PlayerPrefs.SetString(HABIT + name + BEST + YEAR + DATE, M_Date.singleton.StartOfYear(date).ToString());
-
-        PlayerPrefs.SetInt(HABIT + name + BEST + YEAR + COMPLETIONS, yearCompletions);
-        PlayerPrefs.SetFloat(HABIT + name + BEST + YEAR + VALUE, yearValue);
+            PlayerPrefs.SetInt(HABIT + name + BEST + YEAR + COMPLETIONS, yearCompletions);
+            PlayerPrefs.SetFloat(HABIT + name + BEST + YEAR + VALUE, yearValue);
+        }
     }
     private static void SaveHabitBestStreak(string name)
     {
         LoadHabitStreak(name, out DateTime streakStartDate, out DateTime streakEndDate, out int streakCompletions, out float streakValue);
         LoadHabitBestStreak(name, out DateTime bestStreakStartDate, out DateTime bestStreakEndDate, out int bestStreakCompletions, out float bestStreakValue);
 
-        if (streakCompletions <= bestStreakCompletions)
-            return;
+        if (streakStartDate == bestStreakStartDate || streakCompletions > bestStreakCompletions)
+        {
+            PlayerPrefs.SetString(HABIT + name + BEST + STREAK + START + DATE, streakStartDate.ToString());
+            PlayerPrefs.SetString(HABIT + name + BEST + STREAK + END + DATE, streakEndDate.ToString());
 
-        PlayerPrefs.SetString(HABIT + name + BEST + STREAK + START + DATE, streakStartDate.ToString());
-        PlayerPrefs.SetString(HABIT + name + BEST + STREAK + END + DATE, streakEndDate.ToString());
 
-
-        PlayerPrefs.SetInt(HABIT + name + BEST + STREAK + COMPLETIONS, streakCompletions);
-        PlayerPrefs.SetFloat(HABIT + name + BEST + STREAK + VALUE, streakValue);
+            PlayerPrefs.SetInt(HABIT + name + BEST + STREAK + COMPLETIONS, streakCompletions);
+            PlayerPrefs.SetFloat(HABIT + name + BEST + STREAK + VALUE, streakValue);
+        }
     }
 
 

@@ -330,7 +330,7 @@ public class M_UI_DisplayHabit : MonoBehaviour
                 DateTime weekDate = habitToDisplay.data.creationDate.AddDays(7*val);
 
                 M_SaveLoad.LoadHabitWeek(habitToDisplay.data.name, weekDate, out int weekCompletion, out float weekValue);
-                item.GetComponent<HabitStats>().DisplayStats(habitToDisplay.data.type, weekCompletion, weekValue, M_Date.DAY_FORMAT, weekDate, weekDate.AddDays(7));
+                item.GetComponent<HabitStats>().DisplayStats(habitToDisplay.data.type, weekCompletion, weekValue, M_Date.DAY_FORMAT, M_Date.singleton.StartOfWeek(weekDate), M_Date.singleton.StartOfWeek(weekDate).AddDays(7));
                 break;
             case 2: // Monthly
                 DateTime monthDate = habitToDisplay.data.creationDate.AddMonths(val);

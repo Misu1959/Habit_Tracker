@@ -23,7 +23,9 @@ public class SortedObject : MonoBehaviour
         layoutSize = transform.parent.GetComponent<RectTransform>().rect.height;
 
 
-        GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+        Color color = GetComponent<Image>().color;
+        color.a = 1;
+        GetComponent<Image>().color = color;
 
         M_UI_Main.singleton.TurnLayoutOff();
         M_UI_SortHabits.singleton.ChangeSortingData(SortingType.manually);
@@ -38,7 +40,10 @@ public class SortedObject : MonoBehaviour
 
     public void EndSorting()
     {
-        GetComponent<Image>().color = new Color32(255, 255, 255, 0);
+        Color color = GetComponent<Image>().color;
+        color.a = 0;
+
+        GetComponent<Image>().color = color;
         M_UI_Main.singleton.TurnLayoutOn();
 
         M_UI_SortHabits.singleton.Sort();

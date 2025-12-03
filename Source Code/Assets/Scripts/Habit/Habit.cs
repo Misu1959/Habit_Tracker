@@ -75,6 +75,8 @@ public class Habit : MonoBehaviour
 
     public void Recolor(Color newColor)
     {
+        GetComponent<Image>().color = new Color(newColor.r, newColor.g, newColor.b, 0);
+
         data.UpdateColor(newColor);
         M_SaveLoad.UpdateHabitColor(data.name, data.color);
 

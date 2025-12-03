@@ -1,4 +1,6 @@
-# Unity generated folders
+# ================================
+# Unity Generated Files & Folders
+# ================================
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -6,8 +8,18 @@
 [Bb]uilds/
 [Ll]ogs/
 [Mm]emoryCaptures/
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.apk
+*.aab
 
-# Unity auto-generated files
+# ================================
+# Unity Auto-generated Project Files
+# ================================
 *.csproj
 *.unityproj
 *.sln
@@ -15,34 +27,45 @@
 *.tmp
 *.user
 *.userprefs
-*.pidb
-*.booproj
-*.svd
-*.pdb
-*.mdb
-*.opendb
-*.VC.db
 
-# Visual Studio / Rider / IDE folders
+# ================================
+# Visual Studio / IDE Files
+# ================================
 .vs/
 .idea/
 *.sln.iml
 
-# OS generated files
+# ================================
+# OS Generated Files
+# ================================
 .DS_Store
 Thumbs.db
 
-# Crashlytics / Firebase / Gradle files
+# ================================
+# Android/Gradle Build Files
+# ================================
 .gradle/
-*.apk
-*.aab
+*.gradle
 *.keystore
 *.jks
-
-# Logs
 *.log
-
-# Backup files
 *.bak
+
+# ================================
+# CMake / Build System Files
+# ================================
+/Source Code/.utmp/
+/Source Code/Build/
+/Source Code/obj/
+*.ninja
+*.ninja_log
+*.cmake
+CMakeCache.txt
+CMakeFiles/
+
+# ================================
+# Backup / Temporary Files
+# ================================
 *.swp
 *.tmp
+*.backup

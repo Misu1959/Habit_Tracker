@@ -86,7 +86,7 @@ public class M_UI_CreateHabit : MonoBehaviour
     private void SetButtonChangeColor() => buttonChangeColor.onClick.AddListener(M_UI_Main.singleton.OpenColorPickerMenu);
     private void SetToggleType()
     {
-        GameObject unitAmount_Group = inputHabitUnit.transform.parent.gameObject;
+        GameObject unitAmount_Group = inputHabitUnit.transform.parent.parent.gameObject;
 
         toggleHabitType.onValueChanged.AddListener((val) => toggleHabitType.transform.GetChild(0).GetComponent<Image>().sprite = !val ? toggleOff : toggleOn);
 
