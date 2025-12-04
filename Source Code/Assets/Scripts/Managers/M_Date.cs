@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 
@@ -72,5 +73,13 @@ public class M_Date : MonoBehaviour
         for (DateTime date = new DateTime(from.Year, 1, 1); date <= to; date = date.AddYears(1))
             yield return date;
     }
+
+    public bool ChechForNewDay(DateTime day, DateTime dateToCheck) => day != dateToCheck;
+    public bool ChechForNewWeek(DateTime day, DateTime dateToCheck) => StartOfWeek(day) != StartOfWeek(dateToCheck);
+    public bool ChechForNewMonth(DateTime day, DateTime dateToCheck) => StartOfMonth(day) != StartOfMonth(dateToCheck);
+    public bool ChechForNewYear(DateTime day, DateTime dateToCheck) => StartOfYear(day) != StartOfYear(dateToCheck);
+
+
+    public DateTime StringToDate(string str) => DateTime.TryParse(str, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date) ? date : DateTime.Today;
 
 }
