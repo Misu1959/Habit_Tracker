@@ -1,0 +1,9 @@
+# Ignore shaders from GitHub language statistics
+*.shader linguist-ignore
+*.hlsl linguist-ignore
+*.cginc linguist-ignore
+*.compute linguist-ignore
+
+# Optional: also ignore Unity scene & material files
+*.unity linguist-ignore
+*.mat linguist-ignore
