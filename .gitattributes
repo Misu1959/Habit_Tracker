@@ -1,9 +1,12 @@
-# Ignore shaders from GitHub language statistics
-*.shader linguist-ignore
-*.hlsl linguist-ignore
-*.cginc linguist-ignore
-*.compute linguist-ignore
+# Ignore shaders completely from GitHub language stats
+*.shader linguist-vendored
+*.hlsl linguist-vendored
+*.cginc linguist-vendored
+*.compute linguist-vendored
 
-# Optional: also ignore Unity scene & material files
-*.unity linguist-ignore
-*.mat linguist-ignore
+# Optional Unity files
+*.unity linguist-vendored
+*.mat linguist-vendored
+
+# Force C# as primary language
+*.cs linguist-language=C#
